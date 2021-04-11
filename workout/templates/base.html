@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPC Workout</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <!-- Finish Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-jp-black text-jp-white">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Comfirmation</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Finished with your workout?</p>
+                </div>
+                <div class="mb-4 text-center">
+                    <button type="button" class="btn btn-jp-red me-4" data-bs-dismiss="modal" aria-label="Close">Back</button>
+                    <a class="btn btn-jp-orange me-4" href="" role="button">Finish</a>
+                </div>             
+            </div>
+        </div>
+    </div>
+    <!-- Workout List/Detail -->
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>    
+    <!-- Finish Button trigger modal -->
+    <div class="container-fluid bg-jp-black text-jp-white mt-4 py-3">
+        <div class="row">
+            <div class="col text-center">
+                <h3 class="">Complete Workout</h3>
+                <p>Looks like you still have work to do, but you can finish if you've had enough and Joe will make a note</p>
+                <div class="text-center mt-2">                    
+                    <button type="button" class="btn btn-jp-black border-jp-aqua btn-lg my-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Finish</button>
+                </div>                    
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+
+</html>

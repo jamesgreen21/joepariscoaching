@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row pb-1">
+    <div class="col text-center">
+        <figure class="menu-image">
+            <img src="{% static 'images/jp-logo-master-transparent.png' %}" class=" mx-auto d-block logo-img"
+                alt="jp-logo-master">
+        </figure>
+        <h1 class="py-2 text-center">Wednesday</h1>
+        <div class="dropdown">
+            <button class="btn btn-jp-orange btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Select your workout
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                {% for workout in workout_list %}
+                <li><a class="dropdown-item" href="{{ workout.get_absolute_url }}">{{ workout.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <br>
+    </div>
+</div>
+{% endblock %}
