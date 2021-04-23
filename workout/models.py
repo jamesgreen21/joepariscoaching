@@ -44,7 +44,7 @@ class Exercise(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        """Returns the url to access a detail record for this book."""
+        """Returns the url to access a detail record for this exercise."""
         return reverse('exercise-detail', args=[str(self.id)])
 
 

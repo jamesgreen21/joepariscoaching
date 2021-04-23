@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load materializecss %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'accounts/css/styles.css' %}" type="text/css" />
+{% endblock styles %}
+
+{% block content %}
+<!-- Header -->
+<header class="container-fluid pt50">
+    <section class="row">
+        <section class="col s12 xl8 offset-xl2 parallax-container app-sct-header">
+            <article class="parallax">
+                <img src="{% static 'img/gym-one.jpg' %}">
+            </article>
+            <img class="app-sct-logo" src="{% static 'img/logo_dark_lg.png' %}" alt="">
+            <article class="app-title-container white-text">
+                <h1>{{title}}</h1>
+            </article>
+        </section>
+    </section>
+</header>
+
+<!--Register Form-->
+<div class="row white-text">
+    <div class="col s12 offset-m1 m10 offset-l2 l8 center-align pb20">
+        <h5>Registration</h5>
+        <p>Please fill out all fields below:</p>
+    </div>
+    <div class="col s12 offset-m1 m10 offset-l2 l8 grey darken-4 pt20">
+        <form method="POST" enctype="multipart/form-data" action="{% url 'accounts:register' %}">
+            {% csrf_token %}
+            <div class="input-field">
+                {{ form|materializecss }}
+            </div>
+            <div class="btn-field center-align">
+                <button type="submit" class="btn green darken-2 waves-effect waves-light btn-large">Register</button>
+            </div>
+        </form>
+        <div class="">
+            <p class="center-align">Already have an account? <a class="red-text darken-1"
+                    href="{% url 'accounts:login' %}">Login</a></p>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'accounts/js/script.js' %}"></script>
+{% endblock script %}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{{title}}</title>
+
+	{% load static %}
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+</head>
+
+<body>
+	<section class="container">
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<figure class="header-image text-center">
+					<img src="{% static 'images/jp-logo-master-transparent.png' %}" class="mx-auto d-block img-logo"
+						alt="Profile Picture">
+				</figure>
+				<h1 class="pt-2 text-center">Calendar</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content w-100">
+					<div class="calendar-container">
+						<div class="calendar">
+							<div class="year-header">
+								<span class="left-button fa fa-chevron-left" id="prev"> </span>
+								<span class="year" id="label"></span>
+								<span class="right-button fa fa-chevron-right" id="next"> </span>
+							</div>
+							<table class="months-table w-100">
+								<tbody>
+									<tr class="months-row">
+										<td class="month">Jan</td>
+										<td class="month">Feb</td>
+										<td class="month">Mar</td>
+										<td class="month">Apr</td>
+										<td class="month">May</td>
+										<td class="month">Jun</td>
+										<td class="month">Jul</td>
+										<td class="month">Aug</td>
+										<td class="month">Sep</td>
+										<td class="month">Oct</td>
+										<td class="month">Nov</td>
+										<td class="month">Dec</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<table class="days-table w-100">
+								<td class="day">Sun</td>
+								<td class="day">Mon</td>
+								<td class="day">Tue</td>
+								<td class="day">Wed</td>
+								<td class="day">Thu</td>
+								<td class="day">Fri</td>
+								<td class="day">Sat</td>
+							</table>
+							<div class="frame">
+								<table class="dates-table w-100">
+									<tbody class="tbody">
+									</tbody>
+								</table>
+							</div>
+							<!-- Journal and Wokout buttons -->
+							<div class="text-center">
+								<button type="button" class="btn btn-jp-black border-jp-aqua me-4" id="add-button">Journal</button>
+								<a class="btn btn-jp-orange ms-4" href="{% url 'workout:index' %}" role="button">Workout</a>
+							</div>
+						</div>
+					</div>
+					<div class="events-container">
+					</div>
+					<div class="dialog bg-jp-black text-jp-white" id="dialog">
+						<h2 class="dialog-header text-center pb-2">Journal</h2>
+						<div class="text-center">
+							<button type="button" class="btn btn-jp-red" id="cancel-button">Back</button>
+							<a class="btn btn-jp-black border-jp-aqua ms-4" href="#" role="button">Add</a>
+						</div>
+						<hr>
+						<!-- Journal Notes -->
+						{% for note in notes %}
+						<div class="card bg-jp-black text-jp-white">
+							<div class="card-body">
+								<h5 class="card-title">{{ note.subject }}</h5>
+								<small>{{ note.journal_id.entry_date }}</small>
+								<p class="card-text">{{ note.comments }}</p>
+								<!-- Only available for large notes -->
+								<a href="#" class="btn btn-jp-aqua">More info</a>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{{ journal|json_script:"journal" }}
+	<!-- Development version -->
+	<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+
+	<!-- Production version -->
+	<!-- <script src="https://unpkg.com/@popperjs/core@2"></script> -->
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.js' %}"></script>
+	<script src="{% static 'js/calendar.js' %}"></script>
+
+</body>
+
+</html>

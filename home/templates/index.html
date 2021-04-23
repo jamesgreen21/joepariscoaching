@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/jpg" href="{% static 'images/jp-logo-master-transparent.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+
+<body class="bg-jp-black">
+
+     <!-- Home Page -->
+    <div class="panel-container">
+        <div class="panel text-jp-white">
+            <!-- Logo image -->
+            <figure class="header-image">
+                <img src="{% static 'images/jp-logo-master-transparent.png' %}" class=" mx-auto d-block img-main" alt="jp-logo-master">
+            </figure>
+            <br><hr>
+            <h1 class="py-2">Joe Paris Coaching</h1>
+            <h3>Building Rock Solid Bodies and Bulletproof Minds</h3>
+        </div>
+    </div>
+
+    <!-- Sign-in Button trigger modal -->
+    <div class="fixed-bottom mb-4 text-center">
+        {% if user.is_authenticated %}
+        <a class="btn btn-jp-black border-jp-aqua me-4" href="profile.html" role="button">Profile</a>
+        <!-- <a type="button" class="btn btn-jp-red ms-4" href="{% url 'logout'%}" role="button">Logout</a> -->
+        <a class="btn btn-jp-orange ms-4" href="{% url 'journal:index' %}" role="button">Calendar</a>
+        {% else %}
+        <button type="button" class="btn btn-jp-grey border-jp-aqua me-4">Join</button>
+        <a type="button" class="btn btn-jp-black border-jp-aqua ms-4" href="{% url 'login'%}" role="button">Login</a>
+        {% endif %}
+    </div>
+
+   <!-- Django messages -->
+   {% if messages %}
+   {% for message in messages %}
+   <div class="toast position-fixed top-0" role="alert" aria-live="assertive" aria-atomic="true" id="subscribeToast" style="z-index: 5">
+       <div class="toast-header">
+           <strong class="me-auto">Bootstrap</strong>
+           <small class="text-muted">11 mins ago</small>
+           <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+       </div>
+       <div class="toast-body">
+           {{ message }}
+       </div>
+   </div>
+   {% endfor %}
+   {% endif %}
+
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+    {% if messages %}
+    <script>
+        var option = {
+            animation: true,
+            delay: 10000
+        };
+        var toastHTMLElement = document.getElementById("subscribeToast");
+        var toastElement = new bootstrap.Toast(toastHTMLElement, option);
+        toastElement.show();
+    </script>
+    {% endif %}
+
+</body>
+
+</html>

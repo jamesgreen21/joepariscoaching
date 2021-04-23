@@ -12,4 +12,4 @@ def index(request):
         'title': 'Home',
         'form': form,
     }
-    return render(request, 'home/index.html', context)
+    return render(request, 'index.html', context)

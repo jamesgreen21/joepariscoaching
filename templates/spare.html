@@ -1,0 +1,16 @@
+
+   <!-- Temp subscribe for first release -->
+   <div class="fixed-bottom mb-4 text-center">
+    <div class="container">
+        <form role="form" method="POST" action="{% url 'subscribe' %}">{% csrf_token %}
+            {% for field in form %}
+            <div class="input-group mb-3">
+                <input type="email" class="form-control" placeholder="Email" aria-label="Email"
+                    aria-describedby="button-subscribe" id="{{ field.id_for_label }}" name="{{ field.html_name }}">
+                <button class="btn btn-jp-black" type="submit" id="button-subscribe">Submit</button>
+            </div>
+            {{ field.errors }}
+            {% endfor %}
+        </form>
+    </div>
+</div>

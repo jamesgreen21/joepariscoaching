@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row pb-1">
+    <div class="col text-center">
+        <figure class="header-image text-center">
+            <img src="{% static 'images/jp-logo-master-transparent.png' %}" class="mx-auto d-block img-logo"
+                alt="Profile Picture">
+        </figure>
+        <h1 class="py-2 text-jp-white text-center">Logged out</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <p class="text-jp-white">You have successfully been logged out.</p>
+        <div class="text-center mt-4">
+            <a class="btn btn-jp-black border-jp-aqua me-4" href="{% url 'home:index' %}" role="button">Home</a>
+            <a type="button" class="btn btn-jp-black border-jp-aqua ms-4" href="{% url 'login'%}" role="button">Login</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
