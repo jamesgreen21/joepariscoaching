@@ -1,5 +1,6 @@
 # Staticfiles
-# static/
+static/
+staticfiles/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
