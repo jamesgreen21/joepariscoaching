@@ -52,7 +52,6 @@ class Workout(models.Model):
     """Model representing a Workouts."""
     name = models.CharField(max_length=50)
     tag = models.TextField(null=True, blank=True)
-    complete = models.BooleanField(default=False)
 
     def __str__(self):
         """String for representing the Model object."""
@@ -60,15 +59,14 @@ class Workout(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a detail record."""
-        return reverse('workout:detail', args=[str(self.id)])
+        return reverse('home:workouts-detail', args=[str(self.id)])
 
 
 class Routine(models.Model):
     """Model for Routines."""
-    workout_id = models.ForeignKey(Workout, on_delete=models.CASCADE, null=True, verbose_name='Workout')
-    exercise_id = models.ForeignKey(Exercise, on_delete=models.RESTRICT, null=True, verbose_name='Exercise')
+    workout_id = models.ForeignKey(Workout, on_delete=models.CASCADE, verbose_name='Workout', related_name='routines')
+    exercise_id = models.ForeignKey(Exercise, on_delete=models.SET_NULL, null=True, verbose_name='Exercise')
     order = models.IntegerField(default=1)
-    complete = models.BooleanField(default=False)
 
     def __str__(self):
         """String for representing the Model object."""
@@ -85,26 +83,11 @@ class Perform(models.Model):
 
 class Approach(models.Model):
     """Model for Routines."""
-    routine_id = models.ForeignKey(Routine, on_delete=models.CASCADE, null=True)
+    routine_id = models.ForeignKey(Routine, on_delete=models.CASCADE, related_name='approachs')
     set_number = models.IntegerField(default=1)
     reps_targetted = models.IntegerField(default=0, verbose_name='Reps')
-    reps_recorded = models.IntegerField(
-        blank=True,
-        null=True,
-        help_text='Reps'
-    )
     duration = models.DecimalField(max_digits=5, decimal_places=2, default=0, help_text='Time in Minutes')
     perform_id = models.ForeignKey(Perform, on_delete=models.RESTRICT, null=True, verbose_name='Perform')
-    weight_targetted = models.IntegerField(
-        blank=True,
-        null=True,
-        verbose_name='Weight in KG'
-    )
-    weight_recorded = models.IntegerField(
-        blank=True,
-        null=True,
-        help_text='Weight in KG'
-    )
 
     def __str__(self):
         """String for representing the Model object."""

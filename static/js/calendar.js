@@ -138,43 +138,8 @@ function new_event(event) {
         $("#dialog").hide(250);
         $(".events-container").show(250);
     });
-    // Event handler for ok button
-    $("#ok-button").unbind().click({date: event.data.date}, function() {
-        var date = event.data.date;
-        var name = $("#name").val().trim();
-        var count = parseInt($("#count").val().trim());
-        var day = parseInt($(".active-date").html());
-        // Basic form validation
-        if(name.length === 0) {
-            $("#name").addClass("error-input");
-        }
-        else if(isNaN(count)) {
-            $("#count").addClass("error-input");
-        }
-        else {
-            $("#dialog").hide(250);
-            console.log("new event");
-            new_event_json(name, count, date, day);
-            date.setDate(day);
-            init_calendar(date);
-        }
-    });
 }
 
-// JPC - code will be replaced by Python function
-// Adds a json event to event_data
-function new_event_json(name, count, date, day) {
-    var event = {
-        "workout": name,
-        "invited_count": count,
-        "year": date.getFullYear(),
-        "month": date.getMonth()+1,
-        "day": day
-    };
-    event_data["events"].push(event);
-}
-
-// JPC - Amend to display the workout set for day if available
 // Display all events of the selected date in card views
 function show_events(events, month, day) {
     // Clear the dates container
@@ -184,7 +149,7 @@ function show_events(events, month, day) {
     // If there are no events for this date, notify the user
     if(events.length===0) {
         var event_card = $("<div class='event-card'></div>");
-        var event_name = $("<div class='event-name'>There are no events planned for "+month+" "+day+".</div>");
+        var event_name = $("<div class='event-name'>No workout set for "+month+" "+day+".</div>");
         $(event_card).css({ "border-left": "10px solid #262626" });
         $(event_card).append(event_name);
         $(".events-container").append(event_card);
@@ -192,15 +157,18 @@ function show_events(events, month, day) {
     else {
         // Go through and add each event as a card to the events container
         for(var i=0; i<events.length; i++) {
+            let workout_status = ''
+            // Check workout status
+            if (events[i]["status"] == 2) {
+                workout_status = 'Complete'
+            } else if (events[i]["status"] == 1) {
+                workout_status = 'In-progress'
+            } else {
+                workout_status = 'Not started'
+            }
             var event_card = $("<div class='event-card'></div>");
             var event_name = $("<div class='event-name'>"+events[i]["workout"]+":</div>");
-            var event_count = $("<div class='event-count'>"+events[i]["status"]+"</div>");
-            if(events[i]["cancelled"]===true) {
-                $(event_card).css({
-                    "border-left": "10px solid #FF1744"
-                });
-                event_count = $("<div class='event-cancelled'>Cancelled</div>");
-            }
+            var event_count = $("<div class='event-count'>"+workout_status+"</div>");
             $(event_card).append(event_name).append(event_count);
             $(".events-container").append(event_card);
         }
@@ -239,5 +207,6 @@ const months = [
     "November", 
     "December" 
 ];
+
 
 })(jQuery);

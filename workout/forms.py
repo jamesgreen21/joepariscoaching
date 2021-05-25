@@ -1,22 +1,17 @@
 import datetime
 
 from django import forms
-from .models import Approach
+from journal.models import Progress
 
 class WorkoutAppForm(forms.ModelForm):
     """
     Returns a workout app form
     """
-    reps_recorded = forms.IntegerField(
-        required=False,
-        help_text='Reps'        
-    )
-
-    class Meta:
-        model = Approach
-        fields = ['reps_recorded', 'weight_recorded']
-
     def __init__(self, *args, **kwargs):
         super(WorkoutAppForm, self).__init__(*args, **kwargs)
-        self.fields['reps_recorded'].widget.attrs.update({'class' : 'form-control'})
-        self.fields['weight_recorded'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['reps'].widget.attrs.update({'class' : 'form-control form-control-lg'})
+        self.fields['weight'].widget.attrs.update({'class' : 'form-control form-control-lg'})
+
+    class Meta:
+        model = Progress
+        fields = ['reps', 'weight', 'journal_id', 'approach_id']

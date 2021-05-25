@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/jpg" href="{% static 'images/jp-logo-master-transparent.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+
+<body>
+
+    <!-- Workout List/Detail -->
+    <div class="container">
+        <div class="row pb-1">
+            <div class="col text-center">
+                <figure class="header-image text-center">
+                    <img src="{% static 'images/jp-logo-master-transparent.png' %}" class="mx-auto d-block img-logo"
+                        alt="Profile Picture">
+                </figure>
+                <h1 class="py-2 text-center">Wednesday</h1>
+                <div class="dropdown">
+                    <button class="btn btn-jp-orange btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Select your workout
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        {% for workout in workout_list %}
+                        <li><a class="dropdown-item" href="{{ workout.get_absolute_url }}">{{ workout.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>    
+
+
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+
+</body>
+
+</html>

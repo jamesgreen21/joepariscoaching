@@ -7,14 +7,22 @@ class ApproachAdminInline(admin.TabularInline):
     fields = [
         'set_number',
         'reps_targetted',
-        'weight_targetted',
         'perform_id'
     ]
+
+
+class RoutineInstanceInline(admin.TabularInline):
+    model = Routine
 
 
 @admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Approach)
+class ApproachAdmin(admin.ModelAdmin):
+    list_display = ('id', 'routine_id')
 
 
 @admin.register(Exercise)
@@ -31,6 +39,9 @@ class PerformAdmin(admin.ModelAdmin):
 class WorkoutAdmin(admin.ModelAdmin):
     fields  = ['name', 'tag']
     list_display  = ('name', 'tag')
+    inlines = [
+        RoutineInstanceInline
+    ]
 
 
 @admin.register(Routine)

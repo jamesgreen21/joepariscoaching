@@ -1,66 +1,95 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
+from django.views.generic.edit import CreateView
+from django.views.generic.detail import DetailView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.db.models import Max
+from django.db.models import F
 from django.contrib.auth.decorators import login_required
 
 from workout.models import Routine, Workout, Approach
-from .forms import WorkoutAppForm
-
-# def index(request):
-#     """View function for home page of site."""
-
-#     # Get main objects
-#     # workouts = Workout.objects.all()
-
-#     # context = {
-#     #     'workouts': workouts,
-#     # }
-
-#     # Render the HTML template index.html with the data in the context variable
-    # return render(request, 'workout/index.html')
+from journal.models import Journal, Progress
+from workout.forms import WorkoutAppForm
 
 
-class WorkoutListView(generic.ListView):
-    model = Workout
-    template_name = 'workout_list.html'
+class WorkoutView(DetailView):
+
+    model = Journal
+    template_name = 'workout/index.html'
+
+    def get_context_data(self, **kwargs):
+        # pass journal_id and approach_id
+        context = super(WorkoutView, self).get_context_data(**kwargs)
+        progress = Progress.objects.filter(journal_id=self.kwargs['pk'])
+        next_approach = len([item.approach_id.id for item in progress])
+        context['next_workout'] = Workout.objects.filter(pk=self.object.workout_id.id).values('routines__approachs__id').order_by(
+            'routines__order',
+            'routines__approachs__set_number')[next_approach]
+        return context
+
+# class ProgressCreate(CreateView):
+
+#     model = Progress
+#     template_name = 'workout/progress_create.html'
+#     fields = ['reps','weight','journal_id','approach_id']
+
+#     def get_context_data(self, **kwargs):
+#         context = super(ProgressCreate, self).get_context_data(**kwargs)
+#         context['journal'] = get_object_or_404(Journal, pk=self.kwargs['journal_id'])
+#         return context
+
+#     def form_valid(self, form):
+#         self.fields['reps'].widget.attrs.update({'class' : 'form-control form-control-lg'})
+#         return super(ProgressCreate, self).form_valid(form)
 
 
 @login_required
-def workout(request, pk):
+def progress_create(request, pk, approach_id):
     """
     Returns a view that renders the main Workout app and WorkoutAppForm form
+    Note: pk=journal_id
     """
-    routines = Routine.objects.filter(workout_id=pk).order_by('order')
-    approaches = Approach.objects.filter(routine_id__in=[routine.id for routine in routines]).order_by('set_number')
-    workout = get_object_or_404(Workout, pk=pk)
-    active = Approach.objects.filter(
-        routine_id__in=[routine.id for routine in routines],
-        routine_id__complete=False,
-        reps_recorded__isnull=True
-    ).order_by('routine_id__order').first()
+    journal = Journal.objects.filter(pk=pk, workout_id__routines__approachs__id=approach_id).values(
+        'id',
+        'entry_date',
+        'workout_id__id',
+        'workout_id__name',
+        'workout_id__routines__exercise_id__name',
+        'workout_id__routines__exercise_id__equipment_id__name',
+        'workout_id__routines__approachs__perform_id__name',
+        'workout_id__routines__approachs__id',
+        'workout_id__routines__approachs__set_number',
+    ).first()
+
+    if request.method == 'POST':
+        form = WorkoutAppForm(request.POST)
+        if form.is_valid():
+            form.save()
+            progress = Progress.objects.filter(journal_id=pk)
+            next_approach = len([item.approach_id.id for item in progress])
+            approach_id = Workout.objects.filter(pk=journal['workout_id__id']).values('routines__approachs__id').order_by(
+                'routines__order',
+                'routines__approachs__set_number')[next_approach]['routines__approachs__id']
+            # messages.success(request, 'Check-in complete nice work!')
+            return redirect('workout:create-progress', pk, approach_id)
+
+    else:
+        form = WorkoutAppForm()
 
     context = {
         'title': 'Workout',
-        'workout': workout,
-        'routines': routines,
-        'approaches': approaches,
-        'active': active
+        'journal': journal,
+        'form': form,
     }
-    return render(request, 'workout_detail.html', context)
+    return render(request, 'workout/progress_create.html', context)
 
 
-def approach(request, pk, routine_id, approach_id):
-    max_set = Approach.objects.filter(routine_id=routine_id).aggregate(Max('set_number')).get('set_number__max')
-    instance = get_object_or_404(Approach, pk=approach_id)
-    form = WorkoutAppForm(data=request.POST, instance=instance)
-    if form.is_valid():
-        form.save()
-        if instance.set_number == max_set:
-            """Switch Complete status to True on last set_number"""
-            routine = Routine.objects.get(pk=instance.routine_id.id)
-            routine.complete = True
-            routine.save()
-
-        return redirect('workout:detail', pk=pk)
+def complete_workout(request, pk):
+    """
+    Complete the active workout and return to Journal
+    """
+    instance = get_object_or_404(Journal, pk=pk)
+    instance.status = 2  # Workout "complete" status
+    instance.save()
+    return redirect('journal:index')
+ 

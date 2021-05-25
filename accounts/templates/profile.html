@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% load static %}
+    <!-- load thumbnail  -->
+    <link rel="shortcut icon" type="image/jpg" href="{% static 'images/jp-logo-master-transparent.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/css/styles.css' %}">
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="container">
+        <div class="row bg-jp-black text-jp-white">
+            <div class="col-md-12 text-center">
+                <figure class="header-image text-center">
+                    <img src="{% static 'images/jp-logo-master-transparent.png' %}" class="mx-auto d-block img-logo"
+                        alt="Profile Picture">
+                </figure>
+                <h1 class="pt-2 text-center">Profile</h1>
+            </div>
+        </div>
+        <div class="row bg-jp-black text-jp-white">
+            <div class="col">
+                <table class="table text-center table-borderless">
+                    <thead class="text-jp-aqua text-uppercase">
+                        <tr>
+                            <th scope="col">Height</th>
+                            <th scope="col">Weight</th>
+                            <th scope="col">BMR</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-jp-white">
+                        <tr>
+                            <td>{{ user.height}} CM</td>
+                            <td>{{ user_stats.weight }} KG</th>
+                            <td>Coming Soon</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col">
+                <div class="text-center my-4">
+                    <a class="btn btn-jp-black border-jp-aqua me-4" href="{% url 'journal:checkin' %}" role="button">Check-in</a>
+                    <a class="btn btn-jp-orange ms-4" href="{% url 'journal:index' %}" role="button">Journal</a>
+                </div>
+            </div>            
+        </div>
+        <!--Profile Form-->
+        <div class="row">
+            <form class="white-text" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="col col-sm-12 offset-md-1 col-md-10 offset-mg-2 col-lg-8 text-center">
+                    <h2>My Profile</h2>
+                    <p class="center-align">Welcome back
+                        {% if user.first_name %}{{user.first_name}}{% else %}{{user.username}}{% endif %}</p>
+                    <div class="avatar-upload">
+                        <div class="avatar-edit">
+                            <input type='file' id="id_image" name="image" accept=".png, .jpg, .jpeg" />
+                            <label class="white-text waves-effect waves-light teal" for="id_image"></label>
+                        </div>
+                        <div class="avatar-preview">
+                            <div id="imagePreview" style="background-image: url('{{ user.profile.image.url }}');">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-sm-12 offset-md-1 col-md-10 offset-mg-2 col-lg-8 text-center">
+                    <div class="row">
+                        {{ u_form.as_p }}
+                    </div>
+                    <div class="row">
+                        {{ p_form.as_p }}
+                    </div>
+                    <div class="text-center my-2">
+                        <a class="btn btn-jp-red me-4" href="{% url 'home:index' %}" role="button">Back</a>
+                        <button type="submit" class="btn btn-jp-black border-jp-aqua ms-4" href="#" role="button">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+<!-- Development version -->
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+
+<!-- Production version -->
+<!-- <script src="https://unpkg.com/@popperjs/core@2"></script> -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+
+</body>
+
+</html>

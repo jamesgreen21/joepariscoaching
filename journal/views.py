@@ -1,46 +1,70 @@
 import json
 import datetime
-from django.shortcuts import render
+
+from django.utils import timezone
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 
-from journal.models import Journal, Note
-
-
-# class JournalListView(generic.ListView):
-#     model = Journal
-#     queryset = Journal.objects.all()
-#     template_name = 'journal.html'
-
-#     def get_context_data(self, **kwargs):
-#         context = super(JournalListView, self).get_context_data(**kwargs)
-#         context['notes'] = Note.objects.all()
-#         context['title'] = 'Journal'
-#         return context
+from journal.models import Journal, Note, Checkin
+from journal.forms import CheckinForm
 
 
 @login_required
 def journal(request):
     """
     Returns a view that renders the Journal calendar page.
+    Notes data last 60 Days only with history btn (parameter=note_cap).
     """
-    notes = Note.objects.filter(journal_id__user_id=request.user.id).order_by('-journal_id__entry_date')
-    journal = Journal.objects.filter(user_id=request.user.id).exclude(workout_id__isnull=True).values('id', 'workout_id', 'workout_id__name', 'entry_date')
-    json_res = {"events":[]}
+    journal = [i.json_res() for i in Journal.objects.filter(user_id=request.user.id).exclude(workout_id__isnull=True)]
+    json_res = {"events": journal}
+    journal_id = Journal.objects.filter(
+        entry_date=timezone.now().date(),
+        user_id=request.user.id
+        ).values('id').first()
 
-    for entry in journal:
-        json_obj = dict(
-            workout = entry['workout_id__name'],
-            status = 'Complete',
-            year=int(entry['entry_date'].strftime("%Y")),
-            month=int(entry['entry_date'].strftime("%m")),
-            day=int(entry['entry_date'].strftime("%d")),
-        )
-        json_res["events"].append(json_obj)
-
+    note_cap = timezone.now() - datetime.timedelta(days=60)
+    notes = Note.objects.filter(
+        journal_id__user_id=request.user.id,
+        journal_id__entry_date__gte=note_cap
+        ).order_by('-journal_id__entry_date')
     context = {
         'title': 'Journal',
         'notes': notes,
-        'journal': json_res
+        'journal': json_res,
+        'journal_id': journal_id,
     }
     return render(request, 'journal.html', context)
+
+
+@login_required
+def checkin(request):
+    """
+    Returns a view that renders the checkin page and form
+    """
+    if request.method == 'POST':
+        # Check if journal entry exists
+        journal = Journal.objects.filter(entry_date=timezone.now().date(),user_id=request.user.id)
+        if not journal:
+            journal = Journal(entry_date=timezone.now().date(),user_id=request.user)
+            journal.save()
+            journal = Journal.objects.filter(entry_date=timezone.now().date(),user_id=request.user.id)
+        form = CheckinForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.journal_id = journal[0]
+            obj.save()
+            # messages.success(request, 'Check-in complete nice work!')
+            return redirect('accounts:profile')
+
+    else:
+        # Add instance for edit checkin
+        form = CheckinForm()
+
+    context = {
+        'title': 'Check-in',
+        'form': form,
+        # 'subscribe_form': subscribe_form,
+    }
+
+    return render(request, 'checkin.html', context)

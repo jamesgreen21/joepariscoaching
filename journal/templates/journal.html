@@ -22,7 +22,7 @@
 					<img src="{% static 'images/jp-logo-master-transparent.png' %}" class="mx-auto d-block img-logo"
 						alt="Profile Picture">
 				</figure>
-				<h1 class="pt-2 text-center">Calendar</h1>
+				<h1 class="pt-2 text-center">Journal</h1>
 			</div>
 		</div>
 		<div class="row">
@@ -70,22 +70,33 @@
 								</table>
 							</div>
 							<!-- Journal and Wokout buttons -->
-							<div class="text-center">
-								<button type="button" class="btn btn-jp-black border-jp-aqua me-4" id="add-button">Journal</button>
-								<a class="btn btn-jp-orange ms-4" href="{% url 'workout:index' %}" role="button">Workout</a>
+							<div class="text-center jpc-btn">
+								<button type="button" class="btn btn-jp-black border-jp-aqua me-4" id="add-button">Notes</button>
+								<!-- Update here!!! -->
+								{% if journal_id %}
+								<a id="workoutBtn" class="btn btn-jp-orange ms-4" href="{% url 'workout:workout-view' journal_id.id %}" role="button">Start</a>
+								{% else %}
+								<a class="btn btn-jp-orange ms-4" href="#" role="button" disabled>N/A</a>
+								{% endif %}
 							</div>
 						</div>
 					</div>
 					<div class="events-container">
 					</div>
 					<div class="dialog bg-jp-black text-jp-white" id="dialog">
-						<h2 class="dialog-header text-center pb-2">Journal</h2>
-						<div class="text-center">
-							<button type="button" class="btn btn-jp-red" id="cancel-button">Back</button>
-							<a class="btn btn-jp-black border-jp-aqua ms-4" href="#" role="button">Add</a>
+						<h2 class="dialog-header text-center pb-2">Notes</h2>
+						<div class="text-center jpc-btn">
+							<button type="button" class="btn btn-jp-red me-4" id="cancel-button">Back</button>
+							<a class="btn btn-jp-black border-jp-aqua ms-4" href="{% url 'journal:checkin' %}" role="button">Check-in</a>
 						</div>
 						<hr>
 						<!-- Journal Notes -->
+						<div class="card bg-jp-black text-jp-white">
+							<div class="card-body text-center">
+								<h5 class="card-title">Add comment</h5>
+								<a href="#" class="btn btn-jp-orange" disabled>New</a>
+							</div>
+						</div>
 						{% for note in notes %}
 						<div class="card bg-jp-black text-jp-white">
 							<div class="card-body">
@@ -93,7 +104,7 @@
 								<small>{{ note.journal_id.entry_date }}</small>
 								<p class="card-text">{{ note.comments }}</p>
 								<!-- Only available for large notes -->
-								<a href="#" class="btn btn-jp-aqua">More info</a>
+								<!-- <a href="#" class="btn btn-jp-aqua">More info</a> -->
 							</div>
 						</div>
 						{% endfor %}
@@ -104,6 +115,7 @@
 	</section>
 
 	{{ journal|json_script:"journal" }}
+
 	<!-- Development version -->
 	<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
 

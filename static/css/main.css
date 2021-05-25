@@ -27,8 +27,6 @@
 
 /*  Events display */
 .events-container {
-  overflow-y: scroll;
-  height: 100%;
   width: 100%;
   float: left;
   margin: 0px auto;
@@ -221,7 +219,7 @@
 
 /*  Dates table */
 .table-date {
-  cursor: default;
+  cursor: pointer;
   color: #262626;
   height: 26px;
   width: 26px;
@@ -12563,8 +12561,8 @@ h4, .h4 {
   border-color: #55dde0;
 }
 
-.modal-btn .btn {
-  min-width: 6rem;
+.jpc-btn .btn {
+  min-width: 8rem;
 }
 
 .btn {
@@ -12573,7 +12571,6 @@ h4, .h4 {
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   font-family: "Varela Round", sans-serif;
-  min-width: 8rem;
 }
 
 .btn-jp-black:hover {
@@ -12645,6 +12642,10 @@ blockquote .caption {
   padding: 0 12px;
 }
 
+.jp-home-body {
+  background: url(../assets/images/weight-lifting-aqua.jpg) no-repeat left 0 top 0 transparent;
+}
+
 .panel-container {
   width: 100%;
 }
@@ -12662,7 +12663,7 @@ blockquote .caption {
 }
 
 .header-image .img-main {
-  max-width: 225px;
+  max-width: 175px;
 }
 
 .header-image .img-logo {

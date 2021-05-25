@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['jpc-django-app.herokuapp.com','127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts.apps.AccountsConfig',
     'home.apps.HomeConfig',
     'marketing.apps.MarketingConfig',
     'journal.apps.JournalConfig',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'storages',
+    'phone_field',
 ]
 
 MIDDLEWARE = [
@@ -143,9 +145,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT  =   os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "accounts/static"),
+]
 STATICFILES_STORAGE = 'custom_storages.StaticStorage'
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
