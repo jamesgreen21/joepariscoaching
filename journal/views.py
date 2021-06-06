@@ -46,9 +46,10 @@ def checkin(request):
         # Check if journal entry exists
         journal = Journal.objects.filter(entry_date=timezone.now().date(),user_id=request.user.id)
         if not journal:
-            journal = Journal(entry_date=timezone.now().date(),user_id=request.user)
+            journal = Journal(entry_date=timezone.now().date(),user_id=request.user,checkin_status=1)
             journal.save()
             journal = Journal.objects.filter(entry_date=timezone.now().date(),user_id=request.user.id)
+        # !! Code needed to set checkin_status=1 if journal exists !!
         form = CheckinForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)

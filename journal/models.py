@@ -6,12 +6,14 @@ from workout.models import Workout, Approach
 
 class Journal(models.Model):
     """
-    Model for journal/calendar. Status = [0="not started",1="started",2="complete"]
+    Model for journal/calendar. 
     """
     workout_id = models.ForeignKey(Workout, on_delete=models.SET_NULL, null=True, blank=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     entry_date = models.DateField()
-    status = models.IntegerField(default=0)
+    # !!change name to workout_status!!
+    status = models.IntegerField(default=0) # = [0="not started",1="started",2="complete"]
+    checkin_status = models.IntegerField(default=0) # = [0="no",1="yes"]
 
     # Metadata
     class Meta:

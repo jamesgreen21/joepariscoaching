@@ -2,7 +2,7 @@ from django.db import models
 from phone_field import PhoneField
 from django.contrib.auth.models import User
 
-# from sorl import thumbnail
+from sorl import thumbnail
 
 
 class Profile(models.Model):
@@ -28,13 +28,13 @@ class Profile(models.Model):
     mobile = PhoneField(blank=True, help_text='Contact phone number')
     dob = models.DateField(null=True, blank=True)
     height = models.DecimalField(max_digits=5, decimal_places=2, help_text='Height in CM', blank=True, null=True)
-    # image = thumbnail.ImageField('Profile Pic', upload_to='accounts_img', default='accounts_img/logo.PNG')
+    image = thumbnail.ImageField('Profile Pic', upload_to='images/accounts', default='images/accounts/joe-paris-logo-coming-soon.png')
 
     def __str__(self):
         return f'{self.user.username} Profile'
 
-    # @property
-    # def thumbnail(self):
-    #     if self.image:
-    #         return thumbnail.get_thumbnail(self.image, '50x50', quality=90)
-    #     return None
+    @property
+    def thumbnail(self):
+        if self.image:
+            return thumbnail.get_thumbnail(self.image, '50x50', quality=90)
+        return None

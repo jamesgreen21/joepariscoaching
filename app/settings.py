@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'storages',
     'phone_field',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
@@ -147,6 +148,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 USE_S3 = os.getenv('USE_S3') == 'TRUE'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "accounts/static"),
+]
 
 if USE_S3:
     # aws settings
