@@ -59,6 +59,7 @@ def progress_create(request, pk, approach_id):
         'workout_id__routines__approachs__perform_id__name',
         'workout_id__routines__approachs__id',
         'workout_id__routines__approachs__set_number',
+        'workout_id__routines__approachs__reps_targetted',
     ).first()
 
     if request.method == 'POST':
@@ -67,10 +68,12 @@ def progress_create(request, pk, approach_id):
             form.save()
             progress = Progress.objects.filter(journal_id=pk)
             next_approach = len([item.approach_id.id for item in progress])
-            approach_id = Workout.objects.filter(pk=journal['workout_id__id']).values('routines__approachs__id').order_by(
-                'routines__order',
-                'routines__approachs__set_number')[next_approach]['routines__approachs__id']
-            # messages.success(request, 'Check-in complete nice work!')
+            try:
+                approach_id = Workout.objects.filter(pk=journal['workout_id__id']).values('routines__approachs__id').order_by(
+                    'routines__order',
+                    'routines__approachs__set_number')[next_approach]['routines__approachs__id']
+            except:
+                return redirect('workout:complete', pk)
             return redirect('workout:create-progress', pk, approach_id)
 
     else:
@@ -91,5 +94,6 @@ def complete_workout(request, pk):
     instance = get_object_or_404(Journal, pk=pk)
     instance.status = 2  # Workout "complete" status
     instance.save()
+    # messages.success(request, 'Check-in complete nice work!')
     return redirect('journal:index')
  
