@@ -1,0 +1,14 @@
+{% extends "base_workout.html" %}
+{% load static %}
+{% block content %}
+    <!-- Form -->
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <div class="text-center mt-4 jpc-btn">
+            <a class="btn btn-jp-red btn-lg me-2" href="{% url 'workout:workout-view' journal.id %}" role="button">Back</a>
+            <!-- <a type="button" class="btn btn-jp-aqua btn-lg me-2" href="">Skip</a> -->
+            <button type="submit" class="btn btn-jp-orange btn-lg ms-2">Submit</button>
+        </div>
+    </form>
+{% endblock %}

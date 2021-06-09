@@ -51,7 +51,7 @@
 							<button type="button" class="btn btn-jp-black border-jp-aqua me-4" id="add-button">Notes</button>
 							<!-- Update here!!! -->
 							{% if journal_id %}
-							<a id="workoutBtn" class="btn btn-jp-orange ms-4" href="{% url 'workout:workout-view' journal_id.id %}" role="button">Start</a>
+							<a id="workoutBtn" class="btn btn-jp-orange ms-4" href="{% url 'workout:workout-view' journal_id.id %}" role="button">Workout</a>
 							{% else %}
 							<a class="btn btn-jp-orange ms-4" href="#" role="button" disabled>N/A</a>
 							{% endif %}

@@ -2,74 +2,60 @@
 {% load static %}
 {% block content %}
     <!-- Workout List/Detail -->
-    <div class="container bg-jp-black text-jp-white">
-        <div class="row pb-1">
-            <div class="col text-center">
-                <figure class="header-image text-center">
-                    <img src="{% static 'images/jp-logo-master-transparent.png' %}" class="mx-auto d-block img-logo"
-                        alt="Profile Picture">
-                </figure>
-                <!-- <h2 class="py-2 text-center">{{ journal.entry_date| date:"l" }}</h2>
-                <h3 class="subtle">{{ journal.workout_id__name }}</h3> -->
-            </div>
-        </div>
-    </div>
-    <div class="container pt-4">
-        <div class="row">
-            <div class="col">
-                <div class="accordion" id="accordionExample">
-                    <div class="accordion-item">
-                        <!-- Accordion Item Header -->
-                        <h2 class="accordion-header">
-                            <button class="accordion-button">
-                                {{ journal.workout_id__routines__exercise_id__name }}
-                            </button>
-                        </h2>
-                        <!-- Accordion Item Contents -->
-                        <div class="accordion-collapse show">
-                            <div class="accordion-body">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">Set</th>
-                                            <td class="text-center">
-                                                <strong>{{ journal.workout_id__routines__approachs__set_number }}</strong>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Reps</th>
-                                            <td class="bg-jp-orange text-center text-jp-white">
-                                                <strong>{{ journal.workout_id__routines__approachs__reps_targetted }}</strong>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Equipment</th>
-                                            <td>{{ journal.workout_id__routines__exercise_id__equipment_id__name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"><strong>Additional Instructions: </strong> {{ journal.workout_id__routines__approachs__perform_id__name }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <!-- Form -->
-                                <form action="" method="post">
-                                    {% csrf_token %}
-                                    {{ form.reps.label }}{{ form.reps }}
-                                    {{ form.weight.label }}{{ form.weight }}
-                                    {{ journal.workout_id__routine_id }}
-                                    <input type="hidden" name="journal_id" id="id_journal_id" value="{{ journal.id }}">
-                                    <input type="hidden" name="approach_id" id="id_approach_id" value="{{ journal.workout_id__routines__approachs__id }}">
-                                    <div class="text-center mt-4 jpc-btn">
-                                        <a class="btn btn-jp-red btn-lg me-2" href="{% url 'workout:workout-view' journal.id %}" role="button">Back</a>
-                                        <!-- <a type="button" class="btn btn-jp-aqua btn-lg me-2" href="">Skip</a> -->
-                                        <button type="submit" class="btn btn-jp-orange btn-lg ms-2">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
+    <div class="row">
+        <div class="col">
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <!-- Accordion Item Header -->
+                    <h2 class="accordion-header">
+                        <button class="accordion-button">
+                            {{ journal.workout_id__routines__exercise_id__name }}
+                        </button>
+                    </h2>
+                    <!-- Accordion Item Contents -->
+                    <div class="accordion-collapse show">
+                        <div class="accordion-body">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Set</th>
+                                        <td class="text-center">
+                                            <strong>{{ journal.workout_id__routines__approachs__set_number }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Reps</th>
+                                        <td class="bg-jp-orange text-center text-jp-white">
+                                            <strong>{{ journal.workout_id__routines__approachs__reps_targetted }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Equipment</th>
+                                        <td>{{ journal.workout_id__routines__exercise_id__equipment_id__name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><strong>Additional Instructions: </strong> {{ journal.workout_id__routines__approachs__perform_id__name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- Form -->
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                {{ form.reps.label }}{{ form.reps }}
+                                {{ form.weight.label }}{{ form.weight }}
+                                {{ journal.workout_id__routine_id }}
+                                <input type="hidden" name="journal_id" id="id_journal_id" value="{{ journal.id }}">
+                                <input type="hidden" name="approach_id" id="id_approach_id" value="{{ journal.workout_id__routines__approachs__id }}">
+                                <div class="text-center mt-4 jpc-btn">
+                                    <a class="btn btn-jp-red btn-lg me-2" href="{% url 'workout:workout-view' journal.id %}" role="button">Back</a>
+                                    <!-- <a type="button" class="btn btn-jp-aqua btn-lg me-2" href="">Skip</a> -->
+                                    <button type="submit" class="btn btn-jp-orange btn-lg ms-2">Submit</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 {% endblock %}

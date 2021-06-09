@@ -15,16 +15,27 @@
 </head>
 
 <body>
+    {% if messages %}
+        {% for message in messages %}
+            <div id="djangoMessages" class="alert alert-{{ message.tags }} fixed-top" role="alert">
+                <figure class="header-image text-center">
+                    <img src="{% static 'images/jp-logo-master-transparent.png' %}" class="mx-auto d-block img-logo"
+                    alt="Profile Picture">
+                </figure>
+                <h3 class="text-center">{{ message }}</h3>
+            </div>
+        {% endfor %}
+    {% endif %}
     <!-- Navbar -->
     <div class="collapse" id="navbarToggleExternalContent">
-        <div class="bg-dark p-4">
+        <div class="bg-jp-black p-4">
             <div class="text-center jpc-btn">
-                <a class="btn btn-jp-aqua me-4" href="{% url 'journal:index' %}" role="button">Journal</a>
-                <a class="btn btn-jp-black border-jp-aqua ms-4" href="{% url 'journal:checkin' %}" role="button">Check-in</a>
+                <a class="btn btn-jp-aqua me-4" href="{% url 'accounts:profile' %}" role="button">Profle</a>
+                <a class="btn btn-jp-black border-jp-aqua ms-4" href="{% url 'journal:index' %}" role="button">Journal</a>
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-jp-black">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
@@ -50,24 +61,6 @@
         {% block content %} {% endblock %}
     </div>
 
-    <!-- Django messages -->
-    {% if messages %}
-    {% for message in messages %}
-    <div class="toast position-fixed top-0" role="alert" aria-live="assertive" aria-atomic="true" id="subscribeToast"
-        style="z-index: 5">
-        <div class="toast-header">
-            <strong class="me-auto">Bootstrap</strong>
-            <small class="text-muted">11 mins ago</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            {{ message }}
-        </div>
-    </div>
-    {% endfor %}
-    {% endif %}
-
-
     <!-- Development version -->
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
 
@@ -76,6 +69,13 @@
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script>
+        setTimeout(function(){
+            if ($('#djangoMessages').length > 0) {
+                $('#djangoMessages').fadeOut();
+            }
+        }, 1000)
+    </script>
     {% block script %} {% endblock %}
 </body>
 

@@ -44,35 +44,9 @@
         {% endif %}
     </div>
 
-   <!-- Django messages -->
-   {% if messages %}
-   {% for message in messages %}
-   <div class="toast position-fixed top-0" role="alert" aria-live="assertive" aria-atomic="true" id="subscribeToast" style="z-index: 5">
-       <div class="toast-header">
-           <strong class="me-auto">Bootstrap</strong>
-           <small class="text-muted">11 mins ago</small>
-           <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-       </div>
-       <div class="toast-body">
-           {{ message }}
-       </div>
-   </div>
-   {% endfor %}
-   {% endif %}
-
     <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
-    {% if messages %}
-    <script>
-        var option = {
-            animation: true,
-            delay: 10000
-        };
-        var toastHTMLElement = document.getElementById("subscribeToast");
-        var toastElement = new bootstrap.Toast(toastHTMLElement, option);
-        toastElement.show();
-    </script>
-    {% endif %}
+
 
 </body>
 

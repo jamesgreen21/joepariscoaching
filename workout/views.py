@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db.models import F
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from workout.models import Routine, Workout, Approach
 from journal.models import Journal, Progress
@@ -22,9 +23,15 @@ class WorkoutView(DetailView):
         context = super(WorkoutView, self).get_context_data(**kwargs)
         progress = Progress.objects.filter(journal_id=self.kwargs['pk'])
         next_approach = len([item.approach_id.id for item in progress])
-        context['next_workout'] = Workout.objects.filter(pk=self.object.workout_id.id).values('routines__approachs__id').order_by(
+        try:
+            context['next_workout'] = Workout.objects.filter(pk=self.object.workout_id.id).values('routines__approachs__id').order_by(
             'routines__order',
             'routines__approachs__set_number')[next_approach]
+        except:
+            context['next_workout'] = Workout.objects.filter(pk=self.object.workout_id.id).values('routines__approachs__id').order_by(
+            'routines__order',
+            'routines__approachs__set_number').last()
+        context['progress'] = progress
         return context
 
 # class ProgressCreate(CreateView):
@@ -74,6 +81,7 @@ def progress_create(request, pk, approach_id):
                     'routines__approachs__set_number')[next_approach]['routines__approachs__id']
             except:
                 return redirect('workout:complete', pk)
+            messages.success(request, 'Set complete, good work!')
             return redirect('workout:create-progress', pk, approach_id)
 
     else:
@@ -87,13 +95,42 @@ def progress_create(request, pk, approach_id):
     return render(request, 'workout/progress_create.html', context)
 
 
+@login_required
+def progress_edit(request, pk):
+    """
+    Returns a view that renders the Workout app edit mode and WorkoutAppForm form
+    """
+    progress = get_object_or_404(Progress, pk=pk)
+    if request.method == 'POST':
+        form = WorkoutAppForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Set updated succesffully!')
+            return redirect('journal:index')
+            # return redirect('workout:workout-view', progress.journal_id)
+
+    else:
+        form = WorkoutAppForm(progress)
+
+    context = {
+        'title': 'Workout Edit',
+        'progress': progress,
+        'form': form,
+    }
+    return render(request, 'workout/progress_edit.html', context)
+
+
 def complete_workout(request, pk):
     """
     Complete the active workout and return to Journal
     """
-    instance = get_object_or_404(Journal, pk=pk)
-    instance.status = 2  # Workout "complete" status
-    instance.save()
+    journal = get_object_or_404(Journal, pk=pk)
+    journal.status = 2  # Workout "complete" status
+    journal.save()
+    context = {
+        'title': 'Workout Complete',
+        'journal': journal,
+    }
     # messages.success(request, 'Check-in complete nice work!')
-    return redirect('journal:index')
+    return render(request, 'workout/progress_complete.html', context)
  

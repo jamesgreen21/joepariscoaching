@@ -15,6 +15,27 @@
 </head>
 
 <body>
+    {% if messages %}
+        {% for message in messages %}
+            <div id="djangoMessages" class="alert alert-{{ message.tags }} fixed-top" role="alert">
+                <figure class="header-image text-center">
+                    <img src="{% static 'images/jp-logo-master-transparent.png' %}" class="mx-auto d-block img-logo"
+                    alt="Profile Picture">
+                </figure>
+                <h3 class="text-center">{{ message }}</h3>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="container bg-jp-black text-jp-white">
+        <div class="row pb-1">
+            <div class="col text-center">
+                <figure class="header-image text-center">
+                    <img src="{% static 'images/jp-logo-master-transparent.png' %}" class="mx-auto d-block img-logo"
+                        alt="Logo image">
+                </figure>
+            </div>
+        </div>
+    </div>
     <!-- Workout List/Detail -->
     {% block content %}{% endblock %}
 
@@ -26,6 +47,13 @@
     <script src="{% static 'js/popper.min.js' %}"></script>
 	<script src="{% static 'js/jquery.min.js' %}"></script>
 	<script src="{% static 'js/bootstrap.js' %}"></script>
+    <script>
+        setTimeout(function(){
+            if ($('#djangoMessages').length > 0) {
+                $('#djangoMessages').fadeOut();
+            }
+        }, 1000)
+    </script>
     {% block script %} {% endblock %}
 </body>
 
