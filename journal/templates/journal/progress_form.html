@@ -1,0 +1,61 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<div class="row mt-2 text-center">
+    <div class="col">
+        <h3 class="text-uppercase text-center text-jp-aqua">{{ set.exercise.name }}</h3>
+        <div class="row">
+            <div class='col-4'>
+                <span class="d-block text-uppercase">Reps</span>
+                <h6 class="d-block text-jp-red fs-4">{{ set.reps }}</h6>
+            </div>
+            <div class='col-4'>
+                <span class="d-block text-uppercase">Set</span>
+                <h6 class="d-block text-jp-red fs-4">{{ set.order }}</h6>
+            </div>
+            <div class='col-4'>
+                <span class="d-block text-uppercase">RPE</span>
+                <h6 class="d-block text-jp-red fs-4">{{ set.rpe }}<small class="text-jp-white">/10</small></h6>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <small class="d-block pb-1"><span class="text-jp-orange fs-5">Equipment: </span>{{ set.exercise.equipment.name }}</small>
+        <small class="d-block"><span class="text-jp-orange fs-5">Instructions: </span>{{ set.instruction.detail }}</small>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="card text-center bg-jp-black text-jp-white">
+        <div class="card-body">
+            <h5 class="card-title text-uppercase text-jp-aqua">Record</h5>
+            <form method="post">{% csrf_token %}
+                <div class="row">
+                    <div class='col-4'>
+                        {{ form.reps|as_crispy_field }}
+                    </div>
+                    <div class='col-4'>
+                        {{ form.weight|as_crispy_field }}
+                    </div>
+                    <div class='col-4'>
+                        {{ form.rpe|as_crispy_field }}
+                    </div>
+                    <div class='col-12'>
+                        {{ form.alternative_exercise|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="text-center my-4 jpc-btn">
+                    <a type="button" class="btn btn-jp-red me-4"
+                        href="{% url 'journal:workout-view' pk=workout_id journal_id=journal_id %}"
+                        role="button">Back</a>
+                    <input type="submit" value="Save" class="btn btn-jp-black border-jp-aqua text-jp-white ms-4">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "crispy_forms",
+    "crispy_bootstrap5",
     'storages',
     'phone_field',
     'sorl.thumbnail',
@@ -84,23 +86,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 LOGIN_REDIRECT_URL = '/'
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-if 'DATABASE_HOST' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DATABASE_NAME'),
-            'USER': os.environ.get('DATABASE_USER'),
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-            'HOST': os.environ.get('DATABASE_HOST'),
-            'PORT': '5432'
-        }
-    }
+USE_DB = os.getenv('USE_DB') == 'TRUE'
+if USE_DB:
     import dj_database_url
-    db_from_env = dj_database_url.config(conn_max_age=600)
-    DATABASES['default'].update(db_from_env)
+    DATABASES = {}
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 else:
     DATABASES = {
         'default': {

@@ -12705,4 +12705,22 @@ blockquote .caption {
   font-family: "Varela Round", sans-serif;
   text-transform: uppercase;
 }
-/*# sourceMappingURL=main.css.map */
+
+/* Add to source */
+
+.jpc-circle-badge {
+  width: 50px; 
+  height: 50px;
+  border-radius: 50%;
+  border-color: #55dde0;
+  display: flex; /* or inline-flex */
+  align-items: center; 
+  justify-content: center;
+}
+
+.jp-alert {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  top: 30vh;
+}

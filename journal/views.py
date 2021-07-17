@@ -5,36 +5,14 @@ from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth.decorators import login_required
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.list import ListView
+from django.contrib.messages.views import SuccessMessageMixin
 
-from journal.models import Journal, Note, Checkin
+from journal.models import Journal, Note, Checkin, Progress
+from workout.models import Workout, WorkoutSet
 from journal.forms import CheckinForm
-
-
-@login_required
-def journal(request):
-    """
-    Returns a view that renders the Journal calendar page.
-    Notes data last 60 Days only with history btn (parameter=note_cap).
-    """
-    journal = [i.json_res() for i in Journal.objects.filter(user_id=request.user.id).exclude(workout_id__isnull=True)]
-    json_res = {"events": journal}
-    journal_id = Journal.objects.filter(
-        entry_date=timezone.now().date(),
-        user_id=request.user.id
-        ).values('id').first()
-
-    note_cap = timezone.now() - datetime.timedelta(days=60)
-    notes = Note.objects.filter(
-        journal_id__user_id=request.user.id,
-        journal_id__entry_date__gte=note_cap
-        ).order_by('-journal_id__entry_date')
-    context = {
-        'title': 'Journal',
-        'notes': notes,
-        'journal': json_res,
-        'journal_id': journal_id,
-    }
-    return render(request, 'journal.html', context)
 
 
 @login_required
@@ -63,9 +41,118 @@ def checkin(request):
         form = CheckinForm()
 
     context = {
-        'title': 'Check-in',
+        'title': 'Profile',
         'form': form,
         # 'subscribe_form': subscribe_form,
     }
 
     return render(request, 'checkin.html', context)
+
+
+class JournalListView(ListView):
+
+    template_name = 'journal_list.html'
+    context_object_name = 'object_list'
+
+    def get_queryset(self):
+        return Journal.objects.filter(user_id=self.request.user).exclude(entry_date__lt=datetime.datetime.today()).order_by('entry_date')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['journal_history'] = Journal.objects.filter(user_id=self.request.user).exclude(entry_date__gte=datetime.datetime.today()).order_by('entry_date')
+        context['title'] = 'Journal'
+        return context
+
+
+class JournalDetailView(DetailView):
+
+    model = Journal
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Journal'
+        return context
+
+
+class JournalUpdateView(SuccessMessageMixin, UpdateView):
+    model = Journal
+    fields = ['workout_id']
+    success_message = "Your Journal was successfully updated!"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Journal'
+        context['journal_id'] = self.kwargs['pk']
+        return context
+
+
+class WorkoutCompleteView(SuccessMessageMixin, UpdateView):
+    model = Journal
+    fields = ['comments']
+    success_message = "Workout complete, well done!"
+    template_name = 'workout/workout_complete_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Journal'
+        context['journal_id'] = self.kwargs['pk']
+        context['workout_id'] = self.kwargs['workout_id']
+        return context
+
+    def form_valid(self, form):
+        form.instance.workout_status = 2
+        return super(WorkoutCompleteView, self).form_valid(form)
+
+
+class WorkoutDetailView(DetailView):
+
+    model = Workout
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        progress = Progress.objects.filter(journal_id=self.kwargs['journal_id']).order_by('workoutset__order')
+        next_set = len([set.workoutset.id for set in progress]) if progress else 0
+        context['progress'] = progress
+        context['title'] = 'Workout'
+        context['journal_id'] = self.kwargs['journal_id']
+        context['workout_id'] = self.kwargs['pk']
+        try:
+            context['next_set'] = WorkoutSet.objects.filter(workout=self.kwargs['pk']).order_by('order')[next_set]
+        except:
+            context['next_set'] = False
+        return context
+
+
+class ProgressCreateView(SuccessMessageMixin, CreateView):
+    model = Progress
+    fields = ['reps','weight','rpe','alternative_exercise']
+    success_message = "Good work! Keep an eye on the timer."
+
+    def form_valid(self, form):
+        journal = get_object_or_404(Journal, pk=self.kwargs['journal_id'])
+        form.instance.journal_id = journal
+        workoutset = get_object_or_404(WorkoutSet, pk=self.kwargs['workoutset'])
+        form.instance.workoutset = workoutset
+        return super(ProgressCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['set'] = get_object_or_404(WorkoutSet, pk=self.kwargs['workoutset'])
+        context['title'] = 'Workout'
+        context['journal_id'] = self.kwargs['journal_id']
+        context['workout_id'] = self.kwargs['workout_id']
+        return context
+
+
+class ProgressUpdateView(SuccessMessageMixin, UpdateView):
+    model = Progress
+    fields = ['reps','weight','rpe','alternative_exercise']
+    success_message = "Set updated successfully!"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['set'] = get_object_or_404(WorkoutSet, pk=self.kwargs['workoutset'])
+        context['title'] = 'Edit Set'
+        context['journal_id'] = self.kwargs['journal_id']
+        context['workout_id'] = self.kwargs['workout_id']
+        return context

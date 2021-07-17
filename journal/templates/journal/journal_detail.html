@@ -1,0 +1,34 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<h3 class="text-uppercase text-center text-jp-aqua">
+    {% if object.is_today %}Today{% else %}{{ object.entry_date|date }}{% endif %}
+</h3>
+    <div class="row">
+        <div class="col">
+            <div class="card text-center bg-jp-black">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase">
+                        {% if object.workout_id %}{{ object.workout_id.name }}{% else %}Rest Day{% endif %}
+                    </h5>
+                    <p class="card-text">
+                        <span class="d-block">Workout Status:  <span class="text-uppercase">
+                            {% if object.workout_status == 0 %}N/A
+                            {% elif object.workout_status == 1 %}Not Started
+                            {% else %}Complete{% endif %}
+                        </span></span>
+                        <span class="d-block">Check-in Status:  <span class="text-uppercase">
+                            {% if object.checkin_status == 0 %}N/A
+                            {% else %}Complete{% endif %}
+                        </span></span>
+                    </p>
+                </div>
+            </div>
+            <div class="text-center my-4 jpc-btn">
+                <a type="button" class="btn btn-jp-red me-4" href="{% url 'journal:index' %}" role="button">Back</a>
+                <a href="{% url 'journal:edit' pk=object.id %}" class="btn btn-jp-black border-jp-aqua ms-4" role="button">Edit</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

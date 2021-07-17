@@ -1,0 +1,7 @@
+<a href="{% url 'journal:workout-view' pk=workout_id journal_id=journal_id %}">Workout</a>
+
+<h1>{{ title }}</h1>
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update">
+</form>

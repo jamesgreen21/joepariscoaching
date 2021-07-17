@@ -6,24 +6,19 @@
 {% endblock static %}
 
 {% block content %}
-    <div class="row bg-jp-black text-jp-white">
-        <div class="col">
-            <table class="table text-center table-borderless">
-                <thead class="text-jp-aqua text-uppercase">
-                    <tr>
-                        <th scope="col">Height</th>
-                        <th scope="col">Weight</th>
-                        <th scope="col">BMR</th>
-                    </tr>
-                </thead>
-                <tbody class="text-jp-white">
-                    <tr>
-                        <td>{{ user.height}} CM</td>
-                        <td>{{ user_stats.weight }} KG</th>
-                        <td>Coming Soon</td>
-                    </tr>
-                </tbody>
-            </table>
+    <h3 class="text-uppercase text-center text-jp-aqua">Bio</h3>
+    <div class="row text-center text-uppercase">
+        <div class='col-4 '>
+            <strong class="d-block">Height</strong>
+            <span class="d-block">{{ user.height}} CM</span>
+        </div>
+        <div class='col-4'>
+            <strong class="d-block">Weight</strong>
+            <span class="d-block">{{ user_stats.weight }} KG</span>
+        </div>  
+        <div class='col-4'>
+            <strong class="d-block">BMR</strong>
+            <span class="d-block">Coming Soon</span>
         </div>
     </div>
     <div class="row text-center">
@@ -33,8 +28,9 @@
             </div>
         </div>            
     </div>
-    <h2 class="text-center">Stats & Bio</h2>
-    <h3 class="text-center">Coming Soon</h3>
+    <hr>
+    <h3 class="text-uppercase text-center text-jp-aqua">User Stats</h3>
+    <p class="text-center">Coming Soon</p>
     <!--Profile Form-->
     <!-- <div class="row">
             <form class="white-text" method="POST" enctype="multipart/form-data">

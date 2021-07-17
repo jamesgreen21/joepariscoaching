@@ -8,7 +8,6 @@ class NoteAdmin(admin.ModelAdmin):
 
 @admin.register(Journal)
 class JournalBuilderAdmin(admin.ModelAdmin):
-    fields = ['entry_date', 'user_id', 'workout_id','status']
     list_display  = ('pk','entry_date', 'user_id', 'workout_id','status')
 
 

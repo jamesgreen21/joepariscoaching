@@ -62,6 +62,31 @@ class Workout(models.Model):
         return reverse('home:workouts-detail', args=[str(self.id)])
 
 
+class Instructions(models.Model):
+    title = models.CharField(max_length=20)
+    detail = models.TextField()
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.title
+
+
+class WorkoutSet(models.Model):
+    """Model for Workout Sets within the Workout."""
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE, related_name='set')
+    exercise = models.ForeignKey(Exercise, on_delete=models.SET_NULL, null=True)
+    order = models.IntegerField(default=1)
+    reps = models.IntegerField(default=0)
+    instruction = models.ForeignKey(Instructions, on_delete=models.RESTRICT, null=True, blank=True)
+    rpe = models.IntegerField(default=0)  # = [difficulty from 0-10]
+    rest = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.workout.name + ' - ' + self.exercise.name + ': ' + str(self.order)
+
+
+# Remove code below this point
 class Routine(models.Model):
     """Model for Routines."""
     workout_id = models.ForeignKey(Workout, on_delete=models.CASCADE, verbose_name='Workout', related_name='routines')

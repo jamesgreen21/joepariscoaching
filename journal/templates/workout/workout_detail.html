@@ -1,0 +1,138 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row mt-2 text-center">
+    <div class="col">
+        {% if not next_set %}
+        <h3 class="text-uppercase text-center text-jp-aqua">Workout Complete!</h3>
+        <div class="row">
+            <div class='col-4'>
+                <span class="d-block text-uppercase">Reps</span>
+                <h6 class="d-block text-jp-red fs-4">-</h6>
+            </div>
+            <div class='col-4'>
+                <span class="d-block text-uppercase">Rest</span>
+                <h6 class="d-block text-jp-red fs-4">-</h6>
+            </div>
+            <div class='col-4'>
+                <span class="d-block text-uppercase">RPE</span>
+                <h6 class="d-block text-jp-red fs-4">-</h6>
+            </div>
+        </div>
+        {% else %}
+        <h3 class="text-uppercase text-center text-jp-aqua">
+            {{ next_set.exercise.name }} <sup class="text-jp-white">({{ next_set.order }})</sup>
+        </h3>
+        <div class="row">
+            <div class='col-4'>
+                <span class="d-block text-uppercase">Reps</span>
+                <h6 class="d-block text-jp-red fs-4">{{ next_set.reps }}</h6>
+            </div>
+            <div class='col-4'>
+                <span class="d-block text-uppercase">Rest</span>
+                <h6 id="countdown" class="d-block text-jp-red fs-4"></h6>
+            </div>
+            <div class='col-4'>
+                <span class="d-block text-uppercase">RPE</span>
+                <h6 class="d-block text-jp-red fs-4">{{ next_set.rpe }}<small class="text-jp-white">/10</small></h6>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<hr>
+<div class="row text-center">
+    {% if not next_set %}
+    <div class="col-12 pb-3">
+        <small class="d-block">Congratulations on completing today's workout.</small>
+    </div>
+    <div class="col-12 pb-2">
+        <a href="{% url 'journal:workout-complete' pk=journal_id workout_id=workout_id %}" class="btn btn-lg btn-jp-aqua" role="button">Finish</a>
+    </div>
+    {% else %}
+    <div class="col-12 pb-3">
+        <small class="d-block">Equipment: {{ next_set.exercise.equipment.name }}</small>
+    </div>
+    <div class="col-12 pb-2">
+        <a href="{% url 'journal:workout-new' journal_id=journal_id workout_id=workout_id workoutset=next_set.pk %}"
+            class="btn btn-lg btn-jp-orange" role="button">Start Set</a>
+    </div>
+    {% endif %}
+</div>
+<hr>
+<div class="row text-center">
+    <div class="col">
+        <h5 class="text-uppercase text-center text-jp-aqua">Workout Details</h5>
+        {% for set in object.set.all %}
+        <ul class="list-group">
+            {% if next_set.pk == set.pk %}
+            <li class="list-group-item bg-jp-grey text-jp-orange">
+                Set {{ set.order }}: <strong class="text-uppercase">{{set.exercise.name}}</strong>
+            </li>
+            {% else %}
+            <li class="list-group-item bg-jp-grey">
+                Set {{ set.order }}: <strong class="text-uppercase">{{set.exercise.name}}</strong>
+            </li>
+            {% endif %}
+        </ul>
+        {% endfor %}
+    </div>
+</div>
+<hr>
+<!-- Progress -->
+<div class="row bg-jp-black text-jp-white mt-2">
+    <div class="col">
+        <h5 class="text-uppercase text-center text-jp-aqua pt-3 pb-2">Progress</h5>
+        <table class="table text-jp-white">
+            <thead>
+                <tr class="text-uppercase">
+                    <th scope="col">Set</th>
+                    <th scope="col">Exercise</th>
+                    <th scope="col">Reps</th>
+                    <th scope="col">Weight</th>
+                    <th scope="col">Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if progress%}
+                {% for entry in progress %}
+                <tr class="align-middle">
+                    <td>{{ entry.workoutset.order }}</td>
+                    <td class="text-uppercase">{{ entry.workoutset.exercise.name }}</td>
+                    <td>{{ entry.reps }}</td>
+                    <td>{{ entry.weight }}</td>
+                    <td>
+                        <a class="btn btn-jp-black border-jp-aqua"
+                        href="{% url 'journal:workout-edit' journal_id=journal_id workout_id=workout_id workoutset=entry.workoutset.id pk=entry.id %}">Go</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr class="align-middle">
+                    <td colspan="5" class="text-center">No progress yet</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %} 
+<script>
+    {% if next_set.rest %}
+    var timeleft = {{ next_set.rest }};
+    {% else %}var timeleft = 60;{% endif %}
+    
+    var downloadTimer = setInterval(function(){
+    if(timeleft <= 0){
+        clearInterval(downloadTimer);
+        document.getElementById("countdown").innerHTML = "Start Set";
+    } else {
+        document.getElementById("countdown").innerHTML = timeleft;
+    }
+    timeleft -= 1;
+    }, 1000);
+</script>
+{% endblock %}

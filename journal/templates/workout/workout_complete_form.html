@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<h3 class="text-uppercase text-center text-jp-aqua">Workout Complete!</h3>
+<div class="row mt-2">
+    <div class="col">
+        <form method="post">{% csrf_token %}
+            <p>Please enter any comments to help Joe with future workouts:</p>
+            {{ form|crispy }}
+            <div class="text-center my-4 jpc-btn">
+                <a type="button" class="btn btn-jp-red me-4" href="{% url 'journal:workout-view' journal_id=journal_id pk=workout_id %}" role="button">Back</a>
+                <input type="submit" value="Save" class="btn btn-jp-black border-jp-aqua text-jp-white ms-4">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
