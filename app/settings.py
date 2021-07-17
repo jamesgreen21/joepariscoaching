@@ -92,11 +92,12 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-USE_DB = os.getenv('USE_DB') == 'TRUE'
-if USE_DB:
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
     import dj_database_url
-    DATABASES = {}
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
+    }
 else:
     DATABASES = {
         'default': {
