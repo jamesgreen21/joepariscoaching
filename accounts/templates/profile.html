@@ -6,63 +6,66 @@
 {% endblock static %}
 
 {% block content %}
-    <h3 class="text-uppercase text-center text-jp-aqua">Bio</h3>
-    <div class="row text-center text-uppercase">
-        <div class='col-4 '>
-            <strong class="d-block">Height</strong>
-            <span class="d-block">{{ user.height}} CM</span>
-        </div>
-        <div class='col-4'>
-            <strong class="d-block">Weight</strong>
-            <span class="d-block">{{ user_stats.weight }} KG</span>
-        </div>  
-        <div class='col-4'>
-            <strong class="d-block">BMR</strong>
-            <span class="d-block">Coming Soon</span>
-        </div>
+<div class="text-center py-2 border border-1 border-jp-aqua rounded-1 mb-1">
+    <h3 class="text-uppercase pt-2 pb-1 text-jp-white">Bio</h3>
+</div>
+<div class="row text-center text-uppercase">
+    <div class='col-4 '>
+        <small class="d-block">Height</small>
+        <h6 class="text-jp-aqua">{{ user.height}} CM</h6>
     </div>
-    <div class="row text-center">
-        <div class="col">
-            <div class="text-center my-4">
-                <a class="btn btn-jp-orange" href="{% url 'journal:checkin' %}" role="button">Check-in</a>
+    <div class='col-4'>
+        <small class="d-block">Weight</small>
+        <h6 class="text-jp-aqua">{{ user_stats.weight }} KG</h6>
+    </div>  
+    <div class='col-4'>
+        <small class="d-block">BMR</small>
+        <h6 class="text-jp-aqua">Coming Soon</h6>
+    </div>
+</div>
+<div class="row text-center">
+    <div class="col">
+        <div class="text-center my-4">
+            <a class="btn btn-jp-orange" href="{% url 'journal:checkin' %}" role="button">Check-in</a>
+        </div>
+    </div>            
+</div>
+<div class="text-center py-2 rounded-1 bg-jp-grey mb-1">
+    <h5 class="text-uppercase pt-2 pb-1 text-jp-white">User Stats</h5>
+</div>
+<p class="text-center">Coming Soon</p>
+<!--Profile Form-->
+<!-- <div class="row">
+        <form class="white-text" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col col-sm-12 offset-md-1 col-md-10 offset-mg-2 col-lg-8 text-center">
+                <h2>My Profile</h2>
+                <p class="center-align">Welcome back
+                    {% if user.first_name %}{{user.first_name}}{% else %}{{user.username}}{% endif %}</p>
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input type='file' id="id_image" name="image" accept=".png, .jpg, .jpeg" />
+                        <label class="white-text waves-effect waves-light teal" for="id_image"></label>
+                    </div>
+                    <div class="avatar-preview">
+                        <div id="imagePreview" style="background-image: url('{{ user.profile.image.url }}');">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>            
-    </div>
-    <hr>
-    <h3 class="text-uppercase text-center text-jp-aqua">User Stats</h3>
-    <p class="text-center">Coming Soon</p>
-    <!--Profile Form-->
-    <!-- <div class="row">
-            <form class="white-text" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="col col-sm-12 offset-md-1 col-md-10 offset-mg-2 col-lg-8 text-center">
-                    <h2>My Profile</h2>
-                    <p class="center-align">Welcome back
-                        {% if user.first_name %}{{user.first_name}}{% else %}{{user.username}}{% endif %}</p>
-                    <div class="avatar-upload">
-                        <div class="avatar-edit">
-                            <input type='file' id="id_image" name="image" accept=".png, .jpg, .jpeg" />
-                            <label class="white-text waves-effect waves-light teal" for="id_image"></label>
-                        </div>
-                        <div class="avatar-preview">
-                            <div id="imagePreview" style="background-image: url('{{ user.profile.image.url }}');">
-                            </div>
-                        </div>
-                    </div>
+            <div class="col col-sm-12 offset-md-1 col-md-10 offset-mg-2 col-lg-8 text-center">
+                <div class="row">
+                    {{ u_form.as_p }}
                 </div>
-                <div class="col col-sm-12 offset-md-1 col-md-10 offset-mg-2 col-lg-8 text-center">
-                    <div class="row">
-                        {{ u_form.as_p }}
-                    </div>
-                    <div class="row">
-                        {{ p_form.as_p }}
-                    </div>
-                    <div class="text-center my-2">
-                        <a class="btn btn-jp-red me-4" href="{% url 'home:index' %}" role="button">Back</a>
-                        <button type="submit" class="btn btn-jp-black border-jp-aqua ms-4" href="#" role="button">Update</button>
-                    </div>
+                <div class="row">
+                    {{ p_form.as_p }}
                 </div>
-            </form>
-        </div> -->
+                <div class="text-center my-2">
+                    <a class="btn btn-jp-red me-4" href="{% url 'home:index' %}" role="button">Back</a>
+                    <button type="submit" class="btn btn-jp-black border-jp-aqua ms-4" href="#" role="button">Update</button>
+                </div>
+            </div>
+        </form>
+    </div> -->
 
 {% endblock content %}

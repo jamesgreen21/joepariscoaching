@@ -3,7 +3,9 @@
 {% load static %}
 
 {% block content %}
-<h3 class="text-uppercase text-center text-jp-aqua">Edit View</h3>
+<div class="text-center py-2 rounded-1 bg-jp-grey mb-1">
+    <h3 class="text-uppercase pt-2 pb-1 text-jp-white">Edit View</h3>
+</div>
 <div class="row mt-2">
     <div class="col">
         <form method="post">{% csrf_token %}

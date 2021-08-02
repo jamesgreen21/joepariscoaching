@@ -3,19 +3,21 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-	<h3 class="text-uppercase text-center text-jp-aqua">Check-in</h3>
-	<div class="row">
-		<div class="offset-md-3 col-md-6">
-			<p>Hi {{ user.first_name }}, please complete the check-in form below on a weekly basis:</p>
+<div class="text-center py-2 rounded-1 bg-jp-grey mb-1">
+    <h3 class="text-uppercase pt-2 pb-1 text-jp-white">Check-in</h3>
+</div>
+<div class="row">
+	<div class="offset-md-3 col-md-6">
+		<p>Hi {{ user.first_name }}, please complete the check-in form below on a weekly basis:</p>
 
-			<form action="" method="post">
-				{% csrf_token %}
-				{{ form|crispy }}
-				<div class="text-center my-4 jpc-btn">
-					<a class="btn btn-jp-red me-4" href="{% url 'accounts:profile' %}" role="button">Back</a>
-					<button type="submit" class="btn btn-jp-black border-jp-aqua ms-4">Send</button>
-				</div>
-			</form>
-		</div>
+		<form action="" method="post">
+			{% csrf_token %}
+			{{ form|crispy }}
+			<div class="text-center my-4 jpc-btn">
+				<a class="btn btn-jp-red me-4" href="{% url 'accounts:profile' %}" role="button">Back</a>
+				<button type="submit" class="btn btn-jp-black border-jp-aqua ms-4">Submit</button>
+			</div>
+		</form>
 	</div>
+</div>
 {% endblock content %}

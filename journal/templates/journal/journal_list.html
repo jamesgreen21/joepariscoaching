@@ -63,15 +63,15 @@
         {% for entry in object_list %}
             {% if entry.is_today %}
             <tr>
-                <td colspan="3" class="border border-1 border-jp-white bg-jp-orange text-jp-white">
+                <td colspan="3" class="rounded-1 bg-jp-orange">
                     <a class="text-decoration-none" href="{% url 'journal:detail' entry.pk %}">
-                        <h5 class="text-center text-uppercase pt-2 pb-1 text-jp-white">Today</h5>
+                        <h5 class="fw-bold text-center text-uppercase pt-2 pb-1 text-jp-white">Today</h5>
                     </a>
                 </td>
             </tr>
             <tr>
                 <td class="align-middle">
-                    <h6 class="jpc-circle-badge border border-1 border-jp-aqua text-jp-white text-uppercase">{{ entry.entry_date|date:"D" }}</h6>
+                    <h6 class="fst-italic text-jp-red text-uppercase">{{ entry.entry_date|date:"D" }}</h6>
                 </td>
                 {% if entry.workout_id %}
                 <td class="align-middle">
@@ -95,15 +95,15 @@
                 {% endif %}
             </tr>
             <tr>
-                <td colspan="3" class="border border-1 bg-jp-grey border-jp-white text-jp-aqua">
-                    <h5 class="text-center text-uppercase pt-2 pb-1">Upcoming</h5>
+                <td colspan="3" class="rounded bg-jp-grey border-jp-white text-jp-white">
+                    <h5 class="fst-italic text-center text-uppercase pt-2 pb-1">Upcoming</h5>
                 </td>
             </tr>
             {% else %}
             <tr>
                 {% if entry.workout_id %}
                 <td>
-                    <h6 class="jpc-circle-badge border border-1 border-jp-aqua text-jp-white text-uppercase">{{ entry.entry_date|date:"D" }}</h6>
+                    <h6 class="fst-italic text-jp-red text-uppercase">{{ entry.entry_date|date:"D" }}</h6>
                 </td>
                 <td class="align-middle">
                     <small class="text-centre text-muted">{{ entry.entry_date|date:"d" }}-{{ entry.entry_date|date:"M" }}</small>
@@ -114,7 +114,7 @@
                 </td>
                 {% else %}
                 <td>
-                    <h6 class="jpc-circle-badge bg-jp-grey border border-1 border-jp-aqua text-jp-white text-uppercase">{{ entry.entry_date|date:"D" }}</h6>
+                    <h6 class="fst-italic text-jp-red text-uppercase">{{ entry.entry_date|date:"D" }}</h6>
                 </td>
                 <td class="align-middle">
                     <small class="text-centre text-muted">{{ entry.entry_date|date:"d" }}-{{ entry.entry_date|date:"M" }}</small>

@@ -9,7 +9,8 @@ class NoteAdmin(admin.ModelAdmin):
 @admin.register(Journal)
 class JournalBuilderAdmin(admin.ModelAdmin):
     list_display  = ('pk','entry_date', 'user_id', 'workout_id','status')
-
+    list_editable  = ('entry_date', 'user_id','workout_id')
+    
 
 @admin.register(Checkin)
 class CheckinAdmin(admin.ModelAdmin):

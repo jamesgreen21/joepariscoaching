@@ -5,43 +5,45 @@
 <div class="row mt-2 text-center">
     <div class="col">
         {% if not next_set %}
-        <h3 class="text-uppercase text-center text-jp-aqua">Workout Complete!</h3>
+        <div class="py-2 rounded-1 bg-jp-aqua">
+            <h3 class="text-center text-uppercase pt-2 pb-1 text-jp-white">Workout Complete!</h3>
+        </div>
         <div class="row">
             <div class='col-4'>
                 <span class="d-block text-uppercase">Reps</span>
-                <h6 class="d-block text-jp-red fs-4">-</h6>
+                <h6 class="d-block text-jp-aqua fs-4">-</h6>
             </div>
             <div class='col-4'>
                 <span class="d-block text-uppercase">Rest</span>
-                <h6 class="d-block text-jp-red fs-4">-</h6>
+                <h6 class="d-block text-jp-aqua fs-4">-</h6>
             </div>
             <div class='col-4'>
                 <span class="d-block text-uppercase">RPE</span>
-                <h6 class="d-block text-jp-red fs-4">-</h6>
+                <h6 class="d-block text-jp-aqua fs-4">-</h6>
             </div>
         </div>
         {% else %}
-        <h3 class="text-uppercase text-center text-jp-aqua">
-            {{ next_set.exercise.name }} <sup class="text-jp-white">({{ next_set.order }})</sup>
-        </h3>
+        <div class="py-2 rounded-1 bg-jp-orange">
+            <h3 class="text-center text-uppercase pt-2 pb-1 text-jp-white">{{ next_set.exercise.name }}</h3>
+        </div>
         <div class="row">
             <div class='col-4'>
                 <span class="d-block text-uppercase">Reps</span>
-                <h6 class="d-block text-jp-red fs-4">{{ next_set.reps }}</h6>
+                <h6 class="d-block text-jp-aqua fs-4">{{ next_set.reps }}</h6>
             </div>
             <div class='col-4'>
                 <span class="d-block text-uppercase">Rest</span>
-                <h6 id="countdown" class="d-block text-jp-red fs-4"></h6>
+                <h6 id="countdown" class="d-block text-jp-aqua fs-2"></h6>
             </div>
             <div class='col-4'>
                 <span class="d-block text-uppercase">RPE</span>
-                <h6 class="d-block text-jp-red fs-4">{{ next_set.rpe }}<small class="text-jp-white">/10</small></h6>
+                <h6 class="d-block text-jp-aqua fs-4">{{ next_set.rpe }}<small class="text-jp-white">/10</small></h6>
             </div>
         </div>
         {% endif %}
     </div>
 </div>
-<hr>
+<br>
 <div class="row text-center">
     {% if not next_set %}
     <div class="col-12 pb-3">
@@ -52,7 +54,7 @@
     </div>
     {% else %}
     <div class="col-12 pb-3">
-        <small class="d-block">Equipment: {{ next_set.exercise.equipment.name }}</small>
+        <span><small class="text-jp-red">Equipment:</small> {{ next_set.exercise.equipment.name }}</span>
     </div>
     <div class="col-12 pb-2">
         <a href="{% url 'journal:workout-new' journal_id=journal_id workout_id=workout_id workoutset=next_set.pk %}"
@@ -63,7 +65,9 @@
 <hr>
 <div class="row text-center">
     <div class="col">
-        <h5 class="text-uppercase text-center text-jp-aqua">Workout Details</h5>
+        <div class="py-2 rounded-1 bg-jp-grey mb-1">
+            <h5 class="text-uppercase pt-2 pb-1 text-jp-white">Workout Details</h5>
+        </div>
         {% for set in object.set.all %}
         <ul class="list-group">
             {% if next_set.pk == set.pk %}
@@ -72,7 +76,9 @@
             </li>
             {% else %}
             <li class="list-group-item bg-jp-grey">
-                Set {{ set.order }}: <strong class="text-uppercase">{{set.exercise.name}}</strong>
+                <span class="text-uppercase">
+                    <small class="text-jp-red">Set {{ set.order }}:</small> {{set.exercise.name}}
+                </span>
             </li>
             {% endif %}
         </ul>
@@ -83,7 +89,9 @@
 <!-- Progress -->
 <div class="row bg-jp-black text-jp-white mt-2">
     <div class="col">
-        <h5 class="text-uppercase text-center text-jp-aqua pt-3 pb-2">Progress</h5>
+        <div class="py-2 rounded-1 bg-jp-grey mb-1">
+            <h5 class="text-uppercase pt-2 pb-1 text-jp-white text-center">Progress</h5>
+        </div>
         <table class="table text-jp-white">
             <thead>
                 <tr class="text-uppercase">
@@ -128,7 +136,7 @@
     var downloadTimer = setInterval(function(){
     if(timeleft <= 0){
         clearInterval(downloadTimer);
-        document.getElementById("countdown").innerHTML = "Start Set";
+        document.getElementById("countdown").innerHTML = "START";
     } else {
         document.getElementById("countdown").innerHTML = timeleft;
     }

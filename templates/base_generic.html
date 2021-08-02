@@ -28,13 +28,13 @@
             <div class="text-center jpc-btn">
                 {% if title == 'Profile' %}
                 <a class="btn btn-jp-aqua me-4" href="{% url 'accounts:profile' %}" role="button">Profile</a>
-                <a class="btn btn-jp-black border-jp-aqua ms-4" href="{% url 'journal:index' %}" role="button">Journal</a>
+                <a class="btn btn-jp-black border-jp-orange ms-4" href="{% url 'journal:index' %}" role="button">Journal</a>
                 {% elif title == 'Journal' %}
                 <a class="btn btn-jp-black border-jp-aqua me-4" href="{% url 'accounts:profile' %}" role="button">Profile</a>
-                <a class="btn btn-jp-aqua ms-4" href="{% url 'journal:index' %}" role="button">Journal</a>
+                <a class="btn btn-jp-orange ms-4" href="{% url 'journal:index' %}" role="button">Journal</a>
                 {% else %}
                 <a class="btn btn-jp-black border-jp-aqua me-4" href="{% url 'accounts:profile' %}" role="button">Profile</a>
-                <a class="btn btn-jp-black border-jp-aqua ms-4" href="{% url 'journal:index' %}" role="button">Journal</a>
+                <a class="btn btn-jp-black border-jp-orange ms-4" href="{% url 'journal:index' %}" role="button">Journal</a>
                 {% endif %}
             </div>
         </div>

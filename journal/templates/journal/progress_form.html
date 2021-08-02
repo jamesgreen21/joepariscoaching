@@ -5,34 +5,40 @@
 {% block content %}
 <div class="row mt-2 text-center">
     <div class="col">
-        <h3 class="text-uppercase text-center text-jp-aqua">{{ set.exercise.name }}</h3>
+        <div class="py-2 rounded-1 bg-jp-grey">
+            <h5 class="text-center text-uppercase pt-2 pb-1 text-jp-white">{{ set.exercise.name }}</h5>
+        </div>
         <div class="row">
             <div class='col-4'>
                 <span class="d-block text-uppercase">Reps</span>
-                <h6 class="d-block text-jp-red fs-4">{{ set.reps }}</h6>
+                <h6 class="d-block text-jp-aqua fs-4">{{ set.reps }}</h6>
             </div>
             <div class='col-4'>
                 <span class="d-block text-uppercase">Set</span>
-                <h6 class="d-block text-jp-red fs-4">{{ set.order }}</h6>
+                <h6 class="d-block text-jp-aqua fs-4">{{ set.order }}</h6>
             </div>
             <div class='col-4'>
                 <span class="d-block text-uppercase">RPE</span>
-                <h6 class="d-block text-jp-red fs-4">{{ set.rpe }}<small class="text-jp-white">/10</small></h6>
+                <h6 class="d-block text-jp-aqua fs-4">{{ set.rpe }}<small class="text-jp-white">/10</small></h6>
             </div>
         </div>
     </div>
 </div>
-<div class="row">
+<br>
+<div class="row text-center">
     <div class="col-12">
-        <small class="d-block pb-1"><span class="text-jp-orange fs-5">Equipment: </span>{{ set.exercise.equipment.name }}</small>
-        <small class="d-block"><span class="text-jp-orange fs-5">Instructions: </span>{{ set.instruction.detail }}</small>
+        <span class="d-block pb-1"><small class="text-jp-red">Equipment:</small> {{ set.exercise.equipment.name }}</span>
+        {% if set.instruction.detail %}
+        <span class="d-block"><small class="text-jp-red">Instructions:</small> {{ set.instruction.detail }}</span>
+        {% endif %}
     </div>
 </div>
-<hr>
 <div class="row">
     <div class="card text-center bg-jp-black text-jp-white">
         <div class="card-body">
-            <h5 class="card-title text-uppercase text-jp-aqua">Record</h5>
+            <div class="py-2 rounded-1 bg-jp-orange mb-1">
+                <h5 class="text-uppercase pt-2 pb-1 text-jp-white">Record</h5>
+            </div>
             <form method="post">{% csrf_token %}
                 <div class="row">
                     <div class='col-4'>

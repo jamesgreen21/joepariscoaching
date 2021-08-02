@@ -2,9 +2,11 @@
 {% load static %}
 
 {% block content %}
-<h3 class="text-uppercase text-center text-jp-aqua">
-    {% if object.is_today %}Today{% else %}{{ object.entry_date|date }}{% endif %}
-</h3>
+<div class="text-center py-2 rounded-1 bg-jp-grey mb-1">
+    <h3 class="text-uppercase pt-2 pb-1 text-jp-white">
+        {% if object.is_today %}Today{% else %}{{ object.entry_date|date }}{% endif %}
+    </h3>
+</div>
     <div class="row">
         <div class="col">
             <div class="card text-center bg-jp-black">
