@@ -3,42 +3,13 @@
 {% load static %}
 
 {% block content %}
-<div class="row mt-2 text-center">
-    <div class="col">
-        <div class="py-2 rounded-1 bg-jp-grey">
-            <h5 class="text-center text-uppercase pt-2 pb-1 text-jp-white">{{ set.exercise.name }}</h5>
-        </div>
-        <div class="row">
-            <div class='col-4'>
-                <span class="d-block text-uppercase">Reps</span>
-                <h6 class="d-block text-jp-aqua fs-4">{{ set.reps }}</h6>
-            </div>
-            <div class='col-4'>
-                <span class="d-block text-uppercase">Set</span>
-                <h6 class="d-block text-jp-aqua fs-4">{{ set.order }}</h6>
-            </div>
-            <div class='col-4'>
-                <span class="d-block text-uppercase">RPE</span>
-                <h6 class="d-block text-jp-aqua fs-4">{{ set.rpe }}<small class="text-jp-white">/10</small></h6>
-            </div>
-        </div>
-    </div>
-</div>
-<br>
-<div class="row text-center">
-    <div class="col-12">
-        <span class="d-block pb-1"><small class="text-jp-red">Equipment:</small> {{ set.exercise.equipment.name }}</span>
-        {% if set.instruction.detail %}
-        <span class="d-block"><small class="text-jp-red">Instructions:</small> {{ set.instruction.detail }}</span>
-        {% endif %}
-    </div>
+<!-- Record Set -->
+<div class="text-center py-2 mb-1 border-bottom border-top border-jp-white bg-jp-orange">
+    <h3 class="pt-1 text-center text-uppercase">Set {{ set.order }}</h3>
 </div>
 <div class="row">
     <div class="card text-center bg-jp-black text-jp-white">
         <div class="card-body">
-            <div class="py-2 rounded-1 bg-jp-orange mb-1">
-                <h5 class="text-uppercase pt-2 pb-1 text-jp-white">Record</h5>
-            </div>
             <form method="post">{% csrf_token %}
                 <div class="row">
                     <div class='col-4'>
@@ -58,10 +29,42 @@
                     <a type="button" class="btn btn-jp-red me-4"
                         href="{% url 'journal:workout-view' pk=workout_id journal_id=journal_id %}"
                         role="button">Back</a>
-                    <input type="submit" value="Save" class="btn btn-jp-black border-jp-aqua text-jp-white ms-4">
+                    <input type="submit" value="Submit" class="btn btn-jp-orange text-jp-white ms-4">
                 </div>
             </form>
         </div>
+    </div>
+</div>
+<!-- Workout Details -->
+<div class="text-center py-2 bg-jp-grey mb-1 border-bottom border-top border-jp-white">
+    <h3 class="text-uppercase pt-2 pb-1 text-jp-white fst-italic">Details</h3>
+</div>
+<h5 class="text-center text-jp-aqua text-uppercase py-2">{{ set.exercise.name }}</h5>
+<div class="row mt-2 text-center">
+    <div class="col">
+        <div class="row">
+            <div class='col-4'>
+                <span class="d-block text-uppercase">Reps</span>
+                <h6 class="d-block text-jp-aqua fs-4">{{ set.reps }}</h6>
+            </div>
+            <div class='col-4'>
+                <span class="d-block text-uppercase">Set</span>
+                <h6 class="d-block text-jp-aqua fs-4">{{ set.order }}</h6>
+            </div>
+            <div class='col-4'>
+                <span class="d-block text-uppercase">RPE</span>
+                <h6 class="d-block text-jp-aqua fs-4">{{ set.rpe }}<small class="text-jp-white">/10</small></h6>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-12 text-jp-aqua">
+        <span class="d-block pb-1"><small class="text-jp-white">Equipment:</small> {{ set.exercise.equipment.name }}</span>
+        {% if set.instruction.detail %}
+        <span class="d-block"><small class="text-jp-white">Instructions:</small> {{ set.instruction.detail }}</span>
+        {% endif %}
     </div>
 </div>
 {% endblock content %}

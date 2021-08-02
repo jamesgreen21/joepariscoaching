@@ -48,19 +48,15 @@
             </button>
         </div>
     </nav>
-    <div class="container-fluid bg-jp-black">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <figure class="header-image text-center">
-                    <a href="{% url 'home:index' %}">
-                        <img src="{% static 'images/jp-logo-master-transparent.png' %}" class="mx-auto d-block img-logo"
-                        alt="Profile Picture">
-                    </a>
-                </figure>
-                <h1 class="pt-2 text-center text-jp-white">{{ title }}</h1>
-            </div>
-        </div>
+    <div class="bg-jp-black sticky-top pb-1">
+        <figure class="header-image text-center">
+            <a href="{% url 'home:index' %}">
+                <img src="{% static 'images/jp-logo-master-transparent.png' %}" class="mx-auto d-block img-logo"
+                alt="Profile Picture">
+            </a>
+        </figure>
     </div>
+    <h2 class="text-center text-jp-white text-uppercase">{{ title }}</h2>
     <div class="container text-jp-white">
         {% block content %} {% endblock %}
     </div>

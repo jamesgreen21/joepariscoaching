@@ -3,53 +3,51 @@
 
 {% block content %}
     <!-- History -->
-    <div class="row bg-jp-grey">
-        <div class="col">
-            <div class="accordion accordion-flush" id="accordionFlushExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingOne">
-                        <button class="accordion-button collapsed text-jp-white" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                            Click for History
-                        </button>
-                    </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                        data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">
-                            {% if journal_history %}
-                            <table class="table bg-jp-black text-jp-white">
-                                <tbody>
-                                    {% for entry in journal_history %}
-                                    <tr>
-                                        <td>
-                                            <h6 class="jpc-circle-badge border border-1 border-jp-aqua text-jp-white text-uppercase">{{ entry.entry_date|date:"D" }}</h6>
-                                        </td>
-                                        {% if entry.workout_id %}
-                                        <td class="align-middle">
-                                            <small class="text-centre text-muted">{{ entry.entry_date|date:"d" }}-{{ entry.entry_date|date:"M" }}</small>
-                                            <h6 class="text-uppercase">{{ entry.workout_id.name|truncatechars:20 }}</h6>
-                                        </td>
-                                        <td class="text-center">
-                                            <a type="button" class="btn btn-jp-black border-jp-aqua"  role="button"
-                                                href="{% url 'journal:workout-view' pk=entry.workout_id.pk journal_id=entry.pk %}">Edit</a>
-                                        </td>
-                                        {% else %}
-                                        <td class="align-middle">
-                                            <small class="text-centre text-muted">{{ entry.entry_date|date:"d" }}-{{ entry.entry_date|date:"M" }}</small>
-                                            <h6 class="text-uppercase">Rest Day</h6>
-                                        </td>
-                                        <td class="text-center">
-                                            <a type="button" class="btn btn-jp-black border-jp-aqua" href="{% url 'journal:detail' entry.pk %}" role="button">View</a>
-                                        </td>
-                                        {% endif %}
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                            {% else %}
-                            <p>No history available!</p>
-                            {% endif %}
-                        </div>
+    <div class="bg-jp-grey">
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button collapsed text-jp-white fst-italic" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Click for History
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        {% if journal_history %}
+                        <table class="table bg-jp-grey text-jp-white">
+                            <tbody>
+                                {% for entry in journal_history %}
+                                <tr>
+                                    <td class="align-middle">
+                                        <h6 class="fst-italic text-jp-red text-uppercase">{{ entry.entry_date|date:"D" }}</h6>
+                                    </td>
+                                    {% if entry.workout_id %}
+                                    <td class="align-middle">
+                                        <small class="text-centre text-muted">{{ entry.entry_date|date:"d" }}-{{ entry.entry_date|date:"M" }}</small>
+                                        <h6 class="text-uppercase">{{ entry.workout_id.name|truncatechars:20 }}</h6>
+                                    </td>
+                                    <td class="text-center">
+                                        <a type="button" class="btn btn-jp-black border-jp-aqua"  role="button"
+                                            href="{% url 'journal:workout-view' pk=entry.workout_id.pk journal_id=entry.pk %}">Edit</a>
+                                    </td>
+                                    {% else %}
+                                    <td class="align-middle">
+                                        <small class="text-centre text-muted">{{ entry.entry_date|date:"d" }}-{{ entry.entry_date|date:"M" }}</small>
+                                        <h6 class="text-uppercase">Rest Day</h6>
+                                    </td>
+                                    <td class="text-center">
+                                        <a type="button" class="btn btn-jp-black border-jp-aqua" href="{% url 'journal:detail' entry.pk %}" role="button">View</a>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <p>No history available!</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -63,9 +61,9 @@
         {% for entry in object_list %}
             {% if entry.is_today %}
             <tr>
-                <td colspan="3" class="rounded-1 bg-jp-orange">
+                <td colspan="3" class="bg-jp-orange border-bottom border-top border-jp-white">
                     <a class="text-decoration-none" href="{% url 'journal:detail' entry.pk %}">
-                        <h5 class="fw-bold text-center text-uppercase pt-2 pb-1 text-jp-white">Today</h5>
+                        <h5 class="text-center text-uppercase pt-2 pb-1 text-jp-white">Today</h5>
                     </a>
                 </td>
             </tr>
@@ -95,7 +93,7 @@
                 {% endif %}
             </tr>
             <tr>
-                <td colspan="3" class="rounded bg-jp-grey border-jp-white text-jp-white">
+                <td colspan="3" class="bg-jp-grey border-bottom border-top border-jp-white text-jp-white">
                     <h5 class="fst-italic text-center text-uppercase pt-2 pb-1">Upcoming</h5>
                 </td>
             </tr>
