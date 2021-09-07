@@ -7,63 +7,52 @@
 <div class="text-center py-2 mb-1 border-bottom border-top border-jp-white bg-jp-orange">
     <h3 class="pt-1 text-center text-uppercase">Set {{ set.order }}</h3>
 </div>
+<h5 class="text-jp-aqua text-uppercase pt-2 text-center">{{ set.exercise.name }}</h5>
 <div class="row">
     <div class="card text-center bg-jp-black text-jp-white">
         <div class="card-body">
             <form method="post">{% csrf_token %}
                 <div class="row">
                     <div class='col-4'>
-                        {{ form.reps|as_crispy_field }}
+                        <h6 class="text-uppercase text-jp-white">{{ form.reps.label }} <sup class="text-jp-aqua">{{ set.reps }}</sup></h6>
+                        <input type="number" name="{{ form.reps.name }}" step="0.1" class="numberinput form-control" id="id_reps">
                     </div>
                     <div class='col-4'>
-                        {{ form.weight|as_crispy_field }}
+                        <h6 class="text-uppercase text-jp-white">{{ form.weight.label }} <sup class="text-jp-aqua">{{ set.weight }}</sup></h6>
+                        <input type="number" name="{{ form.weight.name }}" step="0.1" class="numberinput form-control" id="id_weight">
                     </div>
                     <div class='col-4'>
-                        {{ form.rpe|as_crispy_field }}
+                        <h6 class="text-uppercase text-jp-white">{{ form.rpe.label }} <sup class="text-jp-aqua">{{ set.rpe }}</sup></h6>
+                        <input type="number" name="{{ form.rpe.name }}" step="0.1" class="numberinput form-control" id="id_rpe">
                     </div>
-                    <div class='col-12'>
-                        {{ form.alternative_exercise|as_crispy_field }}
+                    <div class='offset-1 col-10 pt-3'>
+                        <h6 class="text-uppercase text-jp-white">{{ form.alternative_exercise.label }}</h6>
+                        <input type="text" name="{{ form.alternative_exercise.name }}" step="0.1" class="numberinput form-control" id="id_alternative_exercise">
                     </div>
                 </div>
                 <div class="text-center my-4 jpc-btn">
                     <a type="button" class="btn btn-jp-red me-4"
                         href="{% url 'journal:workout-view' pk=workout_id journal_id=journal_id %}"
                         role="button">Back</a>
-                    <input type="submit" value="Submit" class="btn btn-jp-orange text-jp-white ms-4">
+                    <input type="submit" value="Submit" class="btn btn-jp-orange text-jp-white ms-4" id="submit-progress">
                 </div>
+                <small><span class="text-jp-aqua">Skip</span> a workout by <span class="text-jp-orange">submitting</span> a blank form</small>
             </form>
         </div>
     </div>
 </div>
+
+
 <!-- Workout Details -->
 <div class="text-center py-2 bg-jp-grey mb-1 border-bottom border-top border-jp-white">
-    <h3 class="text-uppercase pt-2 pb-1 text-jp-white fst-italic">Details</h3>
+    <h3 class="text-uppercase pt-2 pb-1 text-jp-white fst-italic">Instructions</h3>
 </div>
-<h5 class="text-center text-jp-aqua text-uppercase py-2">{{ set.exercise.name }}</h5>
-<div class="row mt-2 text-center">
-    <div class="col">
-        <div class="row">
-            <div class='col-4'>
-                <span class="d-block text-uppercase">Reps</span>
-                <h6 class="d-block text-jp-aqua fs-4">{{ set.reps }}</h6>
-            </div>
-            <div class='col-4'>
-                <span class="d-block text-uppercase">Set</span>
-                <h6 class="d-block text-jp-aqua fs-4">{{ set.order }}</h6>
-            </div>
-            <div class='col-4'>
-                <span class="d-block text-uppercase">RPE</span>
-                <h6 class="d-block text-jp-aqua fs-4">{{ set.rpe }}<small class="text-jp-white">/10</small></h6>
-            </div>
-        </div>
-    </div>
-</div>
-<br>
-<div class="row">
+
+<div class="row text-center pt-2">
+    <h6 class="text-jp-white text-uppercase"><i class="fas fa-dumbbell"></i> {{ set.exercise.equipment.name }}</h6>
     <div class="col-12 text-jp-aqua">
-        <span class="d-block pb-1"><small class="text-jp-white">Equipment:</small> {{ set.exercise.equipment.name }}</span>
         {% if set.instruction.detail %}
-        <span class="d-block"><small class="text-jp-white">Instructions:</small> {{ set.instruction.detail }}</span>
+        <p class="text-jp-white">{{ set.instruction.detail }}</p>
         {% endif %}
     </div>
 </div>

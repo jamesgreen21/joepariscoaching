@@ -9,7 +9,8 @@
     {% load static %}
     <!-- load thumbnail  -->
     <link rel="shortcut icon" type="image/jpg" href="{% static 'images/jp-logo-master-transparent.png' %}" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     {% block static %} {% endblock %}
 </head>
@@ -17,8 +18,9 @@
 <body class="bg-jp-black text-jp-white">
     {% if messages %}
         {% for message in messages %}
-            <div id="djangoMessages" class="alert alert-{{ message.tags }} fixed-top" role="alert">
-                {{ message }}
+            <div id="djangoMessages" class="alert alert-secondary alert-dismissible fade show fixed-bottom" role="alert">
+                <h6 class=""><span class="text-jp-orange text-uppercase">Update: </span>{{ message }}</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
     {% endif %}
@@ -69,13 +71,13 @@
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.js' %}"></script>
-    <script>
+    <!-- <script>
         setTimeout(function(){
             if ($('#djangoMessages').length > 0) {
                 $('#djangoMessages').fadeOut();
             }
         }, 1500)
-    </script>
+    </script> -->
     {% block script %} {% endblock %}
 </body>
 

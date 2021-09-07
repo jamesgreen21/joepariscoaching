@@ -8,13 +8,15 @@
         <div class="text-center py-2 mb-1 border-bottom border-top border-jp-white">
             <h3 class="pt-1 text-center text-uppercase text-jp-aqua">Workout Complete!</h3>
         </div>
+        <h5 class="text-jp-aqua text-uppercase py-2">-</h5>
+        <small class="d-block">Congratulations on completing today's workout.</small>
         <div class="row">
             <div class='col-4'>
                 <span class="d-block text-uppercase">Reps</span>
                 <h6 class="d-block text-jp-aqua fs-4">-</h6>
             </div>
             <div class='col-4'>
-                <span class="d-block text-uppercase">Rest</span>
+                <span class="d-block text-uppercase">Set</span>
                 <h6 class="d-block text-jp-aqua fs-4">-</h6>
             </div>
             <div class='col-4'>
@@ -24,17 +26,19 @@
         </div>
         {% else %}
         <div class="text-center py-2 mb-1 border-bottom border-top border-jp-white bg-jp-orange">
-            <h3 class="pt-1 text-center text-uppercase">Set {{ next_set.order }}</h3>
+            <h3 class="pt-1 text-center text-uppercase text-jp-white">Next Set</h3>
         </div>
-        <h5 class="text-jp-aqua text-uppercase py-2">{{ next_set.exercise.name }}</h5>
-        <div class="row">
+        <h5 class="text-jp-aqua text-uppercase pt-2">{{ next_set.exercise.name }}</h5>
+        <h6 class="text-jp-white text-uppercase"><i class="fas fa-dumbbell"></i> {{ next_set.exercise.equipment.name }}</h6>
+        
+        <div class="row pt-2">
             <div class='col-4'>
                 <span class="d-block text-uppercase">Reps</span>
                 <h6 class="d-block text-jp-aqua fs-4">{{ next_set.reps }}</h6>
             </div>
             <div class='col-4'>
-                <span class="d-block text-uppercase">Rest</span>
-                <h6 id="countdown" class="d-block text-jp-red fs-2"></h6>
+                <span class="d-block text-uppercase">Set</span>
+                <h6 class="d-block text-jp-aqua fs-4">{{ next_set.order }}</h6>
             </div>
             <div class='col-4'>
                 <span class="d-block text-uppercase">RPE</span>
@@ -46,19 +50,16 @@
 </div>
 <div class="row text-center pb-2">
     {% if not next_set %}
-    <div class="col-12 pb-3">
-        <small class="d-block">Congratulations on completing today's workout.</small>
-    </div>
     <div class="col-12 pb-2">
         <a href="{% url 'journal:workout-complete' pk=journal_id workout_id=workout_id %}" class="btn btn-lg btn-jp-aqua" role="button">Finish</a>
     </div>
     {% else %}
-    <div class="col-12 pb-3">
-        <span class="text-jp-aqua"><small class="text-jp-white">Equipment:</small> {{ next_set.exercise.equipment.name }}</span>
-    </div>
     <div class="col-12 pb-2">
+        <span class="d-block text-uppercase">Rest</span>
+        <h3 id="countdown" class="d-block text-jp-red">READY</h3>
         <a href="{% url 'journal:workout-new' journal_id=journal_id workout_id=workout_id workoutset=next_set.pk %}"
-            class="btn btn-lg btn-jp-orange" role="button">Start Set</a>
+            class="btn btn-lg btn-jp-orange" role="button">Start Set
+        </a>
     </div>
     {% endif %}
 </div>
@@ -84,7 +85,9 @@
                 {% for entry in progress %}
                 <tr class="align-middle">
                     <td>{{ entry.workoutset.order }}</td>
-                    <td class="text-uppercase">{{ entry.workoutset.exercise.name }}</td>
+                    {% if entry.alternative_exercise %}
+                    <td class="text-uppercase text-jp-aqua">{{ entry.alternative_exercise }}</td>{% else %}
+                    <td class="text-uppercase">{{ entry.workoutset.exercise.name }}</td>{% endif %}
                     <td>{{ entry.reps }}</td>
                     <td>{{ entry.weight }}</td>
                     <td>

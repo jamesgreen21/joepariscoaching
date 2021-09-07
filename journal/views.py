@@ -9,6 +9,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 from django.contrib.messages.views import SuccessMessageMixin
+from crispy_forms.helper import FormHelper
 
 from journal.models import Journal, Note, Checkin, Progress
 from workout.models import Workout, WorkoutSet
@@ -117,7 +118,7 @@ class WorkoutDetailView(DetailView):
         context['journal_id'] = self.kwargs['journal_id']
         context['workout_id'] = self.kwargs['pk']
         try:
-            context['next_set'] = WorkoutSet.objects.filter(workout=self.kwargs['pk']).order_by('order')[next_set]
+            context['next_set'] = WorkoutSet.objects.filter(workout=self.kwargs['pk']).order_by('order')[next_set]            
         except:
             context['next_set'] = False
         return context
@@ -126,7 +127,12 @@ class WorkoutDetailView(DetailView):
 class ProgressCreateView(SuccessMessageMixin, CreateView):
     model = Progress
     fields = ['reps','weight','rpe','alternative_exercise']
-    success_message = "Good work! Keep an eye on the timer."
+    success_message = "Success! Get ready for the next set and keep your eye on the timer."
+
+    def __init__(self, *args, **kwargs):
+        super(ProgressCreateView, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
 
     def form_valid(self, form):
         journal = get_object_or_404(Journal, pk=self.kwargs['journal_id'])
@@ -148,6 +154,11 @@ class ProgressUpdateView(SuccessMessageMixin, UpdateView):
     model = Progress
     fields = ['reps','weight','rpe','alternative_exercise']
     success_message = "Set updated successfully!"
+
+    def __init__(self, *args, **kwargs):
+        super(ProgressUpdateView, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
